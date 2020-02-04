@@ -1,26 +1,31 @@
+import React from 'react';
+import { useSelector } from 'react-redux';
+
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
-import Main from '../pages/Main/index';
-import Login from '../pages/Login/index';
 
-const Logged = createStackNavigator({
-  Main: {
-    screen: Main,
+import Logged from './logged';
+import Logout from './logout';
+
+export const createRootNavigator = (signedIn = false) => {
+  return createStackNavigator({
+    Logged: { screen: Logged },
+    Logout: { screen: Logout }
   },
-});
+  {
+    headerMode: "none",
+    mode: "modal",
+    initialRouteName: signedIn ? "Logged" : "Logout",
+    navigationOptions: {
+      gesturesEnabled: false
+    }
+  });
+};
 
-const Logout = createStackNavigator({
-  Login: {
-    screen: Login,
-  },
-});
+export default function Routes() {
+  const auth = useSelector(state => state.auth);
+  
+  const Layout = createAppContainer(createRootNavigator(auth.isLogged));
 
-const Routes = (logged = false) => {
-  if(logged) {
-    return createAppContainer(Logged);
-  } else {
-    return createAppContainer(Logout);
-  }
+  return <Layout />;
 }
-
-export default Routes;

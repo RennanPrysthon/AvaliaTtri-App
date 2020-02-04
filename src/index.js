@@ -1,11 +1,18 @@
 import React from 'react';
+import { StatusBar } from "react-native";
+
+import store from './store/index';
+import { Provider } from "react-redux";
 
 import Routes from './routes/index';
-import Reducer from './store/ducks/user';
-import store from './store/index';
 
-const Page = Routes(true);
-
-const App = () => <Reducer store={store}><Page /></Reducer>;
-
-export default App;
+export default function App () {
+  return (
+    <>
+      <StatusBar barStyle='dark-content' backgroundColor="#000"/>
+      <Provider store={store}>
+        <Routes />
+      </Provider>
+    </>
+  );
+}
