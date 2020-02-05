@@ -1,10 +1,72 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, {
+  useState
+} from 'react';
 
-export default function Login() {
+import {
+  Image
+} from 'react-native';
+
+import { 
+  Container,
+  Header,
+  Form,
+  Input,
+  Button,
+  Text
+} from "./styles";
+
+
+export default function Login({ navigation }) {
+
+  const [emailValue, setEmailValue] = useState({ value: '', error: false, });
+  const onEmailText = text => setEmailValue({ value: text, error: false, })
+
+  const [passValue, setPassValue] = useState({ value: '', error: false, });
+  const onPassText = text => setPassValue({ value: text, error: false, })
+
+  const onHandlerLogar = () => {
+  
+    if(emailValue.value == '') {
+      setEmailValue({...emailValue, "error": true})
+    }
+
+    if(passValue.value == '') {
+      setPassValue({...passValue, "error": true})
+    }
+
+    if(passValue.value == '' || emailValue.value == '') return;
+
+    navigation.navigate('Logged')
+  }
+
   return (
-    <View >
-      <Text>Login</Text>
-    </View>
+    <Container >
+      <Header>
+        <Image 
+          style={{ width: 220, height: 220 }}
+          source={require('../../uploads/logo.png')}
+        />
+      </Header>
+      <Form>
+        <Input 
+          onChangeText={onEmailText}
+          value={emailValue.value}
+          error={emailValue.error}        
+        />
+        <Input 
+          onChangeText={onPassText}
+          value={passValue.value}
+          error={passValue.error}
+          secureTextEntry={true}
+        />
+        <Button
+          onPress={() => onHandlerLogar()}
+        >
+          <Text>
+            Entrar
+          </Text>
+        </Button>
+      </Form>
+    </Container>
   );
 }
