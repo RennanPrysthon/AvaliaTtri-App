@@ -12,7 +12,9 @@ import {
   Form,
   Input,
   Button,
-  Text
+  Text,
+  EsqueciSenha,
+  Link
 } from "./styles";
 
 
@@ -49,11 +51,13 @@ export default function Login({ navigation }) {
       </Header>
       <Form>
         <Input 
+          placeholder={"Login..."}
           onChangeText={onEmailText}
           value={emailValue.value}
           error={emailValue.error}        
         />
         <Input 
+          placeholder={"Senha..."}
           onChangeText={onPassText}
           value={passValue.value}
           error={passValue.error}
@@ -66,6 +70,11 @@ export default function Login({ navigation }) {
             Entrar
           </Text>
         </Button>
+        <Link>
+          <EsqueciSenha>
+            Esqueci a senha
+          </EsqueciSenha>
+        </Link>
       </Form>
     </Container>
   );
