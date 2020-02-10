@@ -10,7 +10,7 @@ import Logout from './logout';
 export const createRootNavigator = (signedIn = false) => {
   return createStackNavigator({
     Logged: { screen: Logged },
-    Logout: { screen: Logout }
+    Logout: { screen: Logout, title: "Inicio" }
   },
   {
     headerMode: "none",

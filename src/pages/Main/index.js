@@ -7,26 +7,35 @@ import Reactotron from 'reactotron-react-native';
 import api from '../../services/api';
 
 import Prova from '../../components/Prova/index';
+import { NavigationActions } from 'react-navigation';
 
-export default function Main() {
+export default function Main({ navigation }) {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const loadData = async () => {
+    Reactotron.log(navigation);
+    setLoading(true);
+    await api.get('/provas?id=12')
+      .then(resp => setData(resp.data))
+      .catch(err => Reactotron.log(err))
+    setLoading(false);
+  }
 
   useEffect(() => {
-     const loadData = async () => {
-      await api.get('/provas?id=6')
-        .then(resp => setData(resp.data))
-        .catch(err => Reactotron.log(err))
-    }
-
     loadData();
   }, [])
-
+ 
   return (
     <Container >
       <FlatList 
         data={data}
         keyExtractor={data => data.id}
-        renderItem={(data) => (<Prova data={data.item} />)}
+        renderItem={(data) => (<Prova onVerResult={(idProva, idUser) => {
+          navigation.navigate('Resultado', {idProva: idProva, idUser: idUser});
+        }} data={data.item} />)}
+        onRefresh={() => loadData()}
+        refreshing={loading}
       />
     </Container>
   );

@@ -1,5 +1,4 @@
 import React, { useEffect }from 'react';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 import { 
   Container, 
@@ -8,21 +7,28 @@ import {
   SubTitulo,
   Rodape,
   RodapeTexto,
-  Data
+  Data,
+  Submit,
+  SubmitText
 } from './styles';
 import Reactotron from 'reactotron-react-native';
 
-export default function Prova({ data }) {
+export default function Prova({ onVerResult, data }) {
   
   useEffect(() => {
-    Reactotron.log(data);
+    Reactotron.log(onVerResult);
   }, []);
+  
+  const onHandleFazerTeste = id => {
+    
+  }
 
+  const onHandleVerResultado = (id) => onVerResult(id, 12);
+  
   return (
     <Container>
       <Header>
         <Titulo>{data.titulo}</Titulo>
-        <Icon name='ios-information-circle-outline' size={22} color="#52a" />
       </Header>
       <SubTitulo>{data.materia}</SubTitulo>
       <Rodape>
@@ -31,9 +37,25 @@ export default function Prova({ data }) {
         </RodapeTexto>
         <Data>
           {data.data}
-          
         </Data>
       </Rodape>
+      {data.status == 'NAO_FEITA' ?
+
+        <Submit 
+          feita={false}
+          onPress={() => onHandleFazerTeste(data.id)}
+          >
+          <SubmitText>Fazer prova</SubmitText>
+        </Submit>
+
+        :
+
+        <Submit feita={true}
+          onPress={() => onHandleVerResultado(data.id)}
+        >
+          <SubmitText>Ver resultado</SubmitText>
+        </Submit>
+      }
     </Container>
   );
 }

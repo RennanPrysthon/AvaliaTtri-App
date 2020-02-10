@@ -1,14 +1,39 @@
-import Main from '../pages/Main/index';
-import { createAppContainer } from "react-navigation";
-import { createStackNavigator } from "react-navigation-stack";
+import React from 'react';
 
-const Logged = createAppContainer(createStackNavigator({
-  Main: {
+import Icon from 'react-native-vector-icons/Ionicons';
+
+import { createAppContainer } from "react-navigation";
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { createStackNavigator } from 'react-navigation-stack';
+
+import Main from '../pages/Main/index';
+import Resultado from '../pages/Resultado/index';
+
+const MainStack = createStackNavigator({
+  ListarProvas: {
     screen: Main,
     navigationOptions: {
-      headerShown: false,
-    }
+      title: "Lista",
+    },
   },
+  Resultado: {
+    screen: Resultado,
+    navigationOptions: {
+      title: "Resultado da prova",
+    },
+  }
+});
+
+const Logged = createAppContainer(createBottomTabNavigator({
+  Main: {
+    screen: MainStack,
+    navigationOptions: {
+      title: "Inicio",
+      tabBarIcon: ({focused , horizontal, tintColor}) => {        
+        return <Icon name='ios-list-box' size={focused ? 25 : 20} color={tintColor}/>
+      }
+    }
+  }
 }));
 
 export default Logged;
