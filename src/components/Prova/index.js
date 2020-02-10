@@ -16,7 +16,7 @@ import Reactotron from 'reactotron-react-native';
 export default function Prova({ onVerResult, data }) {
   
   useEffect(() => {
-    Reactotron.log(onVerResult);
+    Reactotron.log(data);
   }, []);
   
   const onHandleFazerTeste = id => {
@@ -32,9 +32,16 @@ export default function Prova({ onVerResult, data }) {
       </Header>
       <SubTitulo>{data.materia}</SubTitulo>
       <Rodape>
-        <RodapeTexto>
-          Quantidade de questoes: {data.qtd_questoes}
-        </RodapeTexto>
+        {data.status == 'FEITA' ? 
+          <RodapeTexto>
+            Pontuação: {data.pontuacao}
+          </RodapeTexto>
+          :
+          <RodapeTexto>
+            Quantidade de questoes: {data.qtd_questoes}
+          </RodapeTexto>
+        }
+        
         <Data>
           {data.data}
         </Data>
