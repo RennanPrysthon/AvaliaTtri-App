@@ -8,6 +8,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 import Main from '../pages/Main/index';
 import Resultado from '../pages/Resultado/index';
+import DetalheProva from '../pages/DetalheProva/index';
 
 const MainStack = createStackNavigator({
   ListarProvas: {
@@ -20,6 +21,12 @@ const MainStack = createStackNavigator({
     screen: Resultado,
     navigationOptions: {
       title: "Resultado da prova",
+    },
+  },
+  DetalheProva: {
+    screen: DetalheProva,
+    navigationOptions: {
+      title: "Fazer prova",
     },
   }
 });

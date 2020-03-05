@@ -13,17 +13,17 @@ import {
 } from './styles';
 import Reactotron from 'reactotron-react-native';
 
-export default function Prova({ onVerResult, data }) {
+export default function Prova({ onVerResult, onFazerTest, data }) {
   
   useEffect(() => {
     Reactotron.log(data);
   }, []);
   
   const onHandleFazerTeste = id => {
-    
+    onFazerTest(id);
   }
 
-  const onHandleVerResultado = (id) => onVerResult(id, 12);
+  const onHandleVerResultado = id => onVerResult(id, 12);
   
   return (
     <Container>

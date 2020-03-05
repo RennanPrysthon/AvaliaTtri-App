@@ -25,7 +25,7 @@ export const createRootNavigator = (signedIn = false) => {
 export default function Routes() {
   const auth = useSelector(state => state.auth);
   
-  const Layout = createAppContainer(createRootNavigator(auth.isLogged));
+  const Layout = createAppContainer(createRootNavigator(true));
 
   return <Layout />;
 }
