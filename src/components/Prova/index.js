@@ -23,7 +23,7 @@ export default function Prova({ onVerResult, onFazerTest, data }) {
     onFazerTest(id);
   }
 
-  const onHandleVerResultado = id => onVerResult(id, 12);
+  const onHandleVerResultado = id => onVerResult(id);
   
   return (
     <Container>

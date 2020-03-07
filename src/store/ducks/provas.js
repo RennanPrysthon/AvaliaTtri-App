@@ -1,18 +1,21 @@
 import { Reactotron } from 'reactotron-react-native';
 
 export const Types = {
-  ADD: 'provas/ADD',
+  ADD_PROVA: 'provas/ADD',
   FINALIZAR: 'provas/FINALIZAR',
 };
 
-const INITIAL_STATE = [
-  
-]
+const INITIAL_STATE = []
 
 export default function reducer(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case Types.ADD:
-      return [...state, action.test];
+    case Types.ADD_PROVA:
+      return [...state, 
+      {
+        id: action.id,
+        enunciado: action.enunciado,
+        alternativas: action.alternativas
+      }]
     case Types.FINALIZAR:
       return INITIAL_STATE;
     default:
@@ -20,21 +23,12 @@ export default function reducer(state = INITIAL_STATE, action) {
   }
 }
 
-export const adicionarProva = prova => {
-  Reactotron.log('chegoy');
-
-  test = prova.map(p => {
-    p.respostaUsuario = ""
-  });
-
-  return {
-    type: Types.ADD,
-    test: test
-  }
-}
-
-export const finalizarProva = () => {
-  return {
-    type: Types.FINALIZAR,
-  }
+export const Creators = {
+  addProva: (id, questoes) => ({
+    type: Types.ADD_PROVA,
+    data: {
+      id,
+      questoes
+    } 
+  })
 }

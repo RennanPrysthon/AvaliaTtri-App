@@ -1,31 +1,25 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 
-import { createAppContainer } from "react-navigation";
-import { createStackNavigator } from "react-navigation-stack";
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Main from '../pages/Main/index';
+import DetalheProva from '../pages/DetalheProva/index';
+import Resultado from '../pages/Resultado/index';
 
-import Logged from './logged';
-import Logout from './logout';
+const Stack = createStackNavigator();
 
-export const createRootNavigator = (signedIn = false) => {
-  return createStackNavigator({
-    Logged: { screen: Logged },
-    Logout: { screen: Logout, title: "Inicio" }
-  },
-  {
-    headerMode: "none",
-    mode: "modal",
-    initialRouteName: signedIn ? "Logged" : "Logout",
-    navigationOptions: {
-      gesturesEnabled: false
-    }
-  });
-};
+const Logged = () => (
+  <Stack.Navigator>
+    <Stack.Screen name="Lista" component={Main}/>
+    <Stack.Screen name="DetalheProva" component={DetalheProva}/>
+    <Stack.Screen name="Resultado" component={Resultado} />
+  </Stack.Navigator>
+);
 
-export default function Routes() {
-  const auth = useSelector(state => state.auth);
-  
-  const Layout = createAppContainer(createRootNavigator(true));
+const Router = () => (
+  <NavigationContainer>
+    <Logged />
+  </NavigationContainer>
+);
 
-  return <Layout />;
-}
+export default Router;
