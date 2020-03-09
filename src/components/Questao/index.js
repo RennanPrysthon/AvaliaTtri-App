@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Enunciado, Alternativas, Alternativa} from './styles';
+import {Container, Enunciado, Alternativas, Alternativa, Header} from './styles';
 
 export default function Questao({data, onSelect}) {
   const alternativas = [
@@ -35,13 +35,15 @@ export default function Questao({data, onSelect}) {
   
   return (
     <Container>
-      <Enunciado>{data.enunciado}</Enunciado>
+      <Header>
+        <Enunciado>{data.enunciado}</Enunciado>
+      </Header>
       <Alternativas>
         {alternativas.map(p => (
           <Alternativa
             onPress={() => onHandleSelect(p)}
-            isPresent={() => (p.key == resp ? '#456' : '#1234')}>
-            {p.key}){p.value}
+            isPresent={p.key == resp}>
+            {p.key}) {p.value}
           </Alternativa>
         ))}
       </Alternativas>
