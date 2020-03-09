@@ -1,18 +1,19 @@
 import React from 'react';
 import { Container, Link, Title } from "./styles";
 import Icon from "react-native-vector-icons/MaterialIcons";
-export default function Header({ navigation }) {
+
+export default function HeaderBack({navigation, title}) {
   return (
     <Container>
       <Link
         onPress={
-          () => navigation.toggleDrawer()
+          () => navigation.goBack()
         }
       >
-        <Icon name="menu" size={30} color="#def" />
+        <Icon name="navigate-before" size={30} color="#def" />
       </Link>
       <Title>
-        AvaliaTRI
+        {title}
       </Title>
     </Container>
   );

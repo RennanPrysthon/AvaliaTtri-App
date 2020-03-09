@@ -1,4 +1,5 @@
-import React, { useEffect }from 'react';
+import React, { useEffect, useState }from 'react';
+import { useSelector } from 'react-redux';
 
 import { 
   Container, 
@@ -11,20 +12,29 @@ import {
   Submit,
   SubmitText
 } from './styles';
-import Reactotron from 'reactotron-react-native';
 
-export default function Prova({ onVerResult, onFazerTest, data }) {
-  
+export default function Prova({ onVerResult, onFazerTest, onContinuarTeste, data }) {
+
+  const provas = useSelector(state => state.provas);
+  const [provaSalva, setProvaSalva] = useState(false);
+
   useEffect(() => {
-    Reactotron.log(data);
-  }, []);
+    var test = provas.filter(p => p.id == data.id);
+    if(test[0] != null) {
+      setProvaSalva(true);
+    }
+  }, [provas]);
   
-  const onHandleFazerTeste = id => {
-    onFazerTest(id);
+  const onHandleFazerTeste = () => {
+    onFazerTest();
   }
 
   const onHandleVerResultado = id => onVerResult(id);
-  
+
+  const onHandleContinuarTeste = (id) => {
+    onContinuarTeste(id);
+  };
+
   return (
     <Container>
       <Header>
@@ -47,13 +57,21 @@ export default function Prova({ onVerResult, onFazerTest, data }) {
         </Data>
       </Rodape>
       {data.status == 'NAO_FEITA' ?
-
-        <Submit 
-          feita={false}
-          onPress={() => onHandleFazerTeste(data.id)}
-          >
-          <SubmitText>Fazer prova</SubmitText>
-        </Submit>
+        
+        provaSalva ? 
+          <Submit 
+            feita={false}
+            onPress={() => onHandleContinuarTeste(data.id)}
+            >
+            <SubmitText>Continuar teste</SubmitText>
+          </Submit>
+          :
+          <Submit 
+            feita={false}
+            onPress={() => onHandleFazerTeste(data.id)}
+            >
+            <SubmitText>Fazer prova</SubmitText>
+          </Submit>
 
         :
 

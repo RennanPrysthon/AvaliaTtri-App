@@ -1,10 +1,14 @@
 import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { Reactotron } from 'reactotron-react-native';
-import { Types, Creators } from '../../store/ducks/provas';
 
 import api from '../../services/api';
+
+import { StatusProva } from '../../store/ducks/provas';
+
+import { Types as provasTypes } from '../../store/ducks/provas';
+import { Types as questoesTypes } from '../../store/ducks/questoes';
+
 import {
   Container, 
   Header, 
@@ -18,28 +22,28 @@ import {
   ListItem
 } from './styles';
 
-export default function DetalheProva({ route }) {
+export default function DetalheProva({ route, navigation }) {
 
   const dispacth = useDispatch();
-  const provas = useSelector(state => state.provas);
 
   const onCarregarProva = async (id) => {
     await api.get(`provas/${id}`)
       .then(res => {
-        let prova = res.data;
-
-        prova.questoes.map(quest => {
-          quest.respostaUsuario = "";
-          quest.isRespondida = false;
-          quest.idProva = prova.id;
-        });
-        console.log(provas);
-        dispacth({type: Types.ADD_PROVA, enunciado: 'erer', id: 1, alternativas: [{'a': 'teste'}]});
+        var prova = {}
+        prova.id = res.data.id;
+        prova.titulo = res.data.titulo;
+        prova.status = StatusProva.INICIADA;
         
-        /*
-        dispacth({type: Types.FINALIZAR});
+        var questoes = res.data.questoes
 
-        */
+        questoes.map(q => {
+          q.respondida = false,
+          q.respostaUsuario = "",
+          q.idProva = prova.id
+        });
+
+        dispacth({type: provasTypes.ADD_PROVA, provas: prova});
+        dispacth({type: questoesTypes.ADD_QUESTOES, questoes: questoes});
       });
   }
 
@@ -62,9 +66,6 @@ export default function DetalheProva({ route }) {
         </Info>
         <Submit>
           <Button onPress={() => onCarregarProva(prova.id)}>
-            <Link>Começar</Link>
-          </Button>
-          <Button onPress={() => dispacth({type: Types.FINALIZAR})}>
             <Link>Começar</Link>
           </Button>
         </Submit>

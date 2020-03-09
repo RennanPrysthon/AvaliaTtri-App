@@ -1,4 +1,8 @@
-import { Reactotron } from 'reactotron-react-native';
+export const StatusProva = {
+  INICIADA: "iniciada",
+  ENVIANDO: "enviando",
+  FINALIZADA: "finalizada",
+}
 
 export const Types = {
   ADD_PROVA: 'provas/ADD',
@@ -10,25 +14,10 @@ const INITIAL_STATE = []
 export default function reducer(state = INITIAL_STATE, action) {
   switch (action.type) {
     case Types.ADD_PROVA:
-      return [...state, 
-      {
-        id: action.id,
-        enunciado: action.enunciado,
-        alternativas: action.alternativas
-      }]
+      return [...state,  action.provas]
     case Types.FINALIZAR:
       return INITIAL_STATE;
     default:
       return state;
   }
-}
-
-export const Creators = {
-  addProva: (id, questoes) => ({
-    type: Types.ADD_PROVA,
-    data: {
-      id,
-      questoes
-    } 
-  })
 }
