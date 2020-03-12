@@ -22,16 +22,20 @@ import {
   ListItem
 } from './styles';
 
+import {ToastAndroid} from 'react-native';
+
 export default function DetalheProva({ route, navigation }) {
 
   const dispacth = useDispatch();
   const auth = useSelector(state => state.auth);
+  const provas = useSelector(state => state.provas);
 
   const onCarregarProva = async (id) => {
     const headers = {
       'Content-Type': 'application/json',
       'Authorization': auth.token
     }
+
     await api.get(`provas/${id}`, {headers})
       .then(res => {
         var prova = {}
@@ -49,6 +53,8 @@ export default function DetalheProva({ route, navigation }) {
 
         dispacth({type: provasTypes.ADD_PROVA, provas: prova});
         dispacth({type: questoesTypes.ADD_QUESTOES, questoes: questoes});
+        ToastAndroid.show('Prova iniciada!', ToastAndroid.SHORT);
+        navigation.goBack();
       })
       .catch(err => console.log(err));
   }
