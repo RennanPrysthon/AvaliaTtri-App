@@ -7,6 +7,7 @@ export const StatusProva = {
 export const Types = {
   ADD_PROVA: 'provas/ADD',
   FINALIZAR: 'provas/FINALIZAR',
+  RESETAR: 'provas/RESETAR',
 };
 
 const INITIAL_STATE = []
@@ -16,6 +17,8 @@ export default function reducer(state = INITIAL_STATE, action) {
     case Types.ADD_PROVA:
       return [...state,  action.provas]
     case Types.FINALIZAR:
+      return INITIAL_STATE;
+    case Types.RESETAR:
       return INITIAL_STATE;
     default:
       return state;

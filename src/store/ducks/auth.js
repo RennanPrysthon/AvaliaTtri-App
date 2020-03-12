@@ -8,7 +8,6 @@ const INITIAL_STATE = {
   token: null,
   user: {
     user_id: null,
-    user_name: null,
   },
 };
 
@@ -17,10 +16,9 @@ export default function reducer(state = INITIAL_STATE, action) {
     case Types.LOGIN:
       return {
         isLogged: true,
-        token: action.payload.token,
+        token: action.token,
         user: {
-          user_id: action.payload.id,
-          user_name: action.payload.name,
+          user_id: action.id,
         },
       };
     case Types.LOGOUT:

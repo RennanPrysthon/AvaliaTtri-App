@@ -12,15 +12,22 @@ import { Types as p} from '../../store/ducks/provas';
 
 export default function Main({ navigation }) {
   const [data, setData] = useState();
+  const [novos, setNovos] = useState();
+  
   const [loading, setLoading] = useState(false);
   
   const dispacth = useDispatch();
   const provas = useSelector(state => state.provas);
+  const auth = useSelector(state => state.auth);
 
   async function loadData() {
     setLoading(true);
-    await api.get(`/provas?id=11`)
-      .then(resp => {
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': auth.token
+    }
+    api.get(`/provas?id=${auth.user.user_id}`, {headers})    
+    .then(resp => {
         setData(resp.data);
       })
       .catch(err => console.log(err));
@@ -28,7 +35,17 @@ export default function Main({ navigation }) {
   }
 
   async function carregar() {
-    loadData();
+    setLoading(true);
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': auth.token
+    }
+    api.get(`/provas?id=${auth.user.user_id}`, {headers})    
+    .then(resp => {
+        setNovos(resp.data);
+      })
+      .catch(err => console.log(err));
+    setLoading(false);
   }
   
   useEffect(() => {
@@ -38,9 +55,11 @@ export default function Main({ navigation }) {
   return (
     <Container >
       <FlatList 
+        inverted={false}
+        key="list"
         data={data}
-        keyExtractor={data => data.id}
-        extraData={data}
+        keyExtractor={data => String(data.id)}
+        showsVerticalScrollIndicator={false}
         renderItem={(data) => (
           <Prova 
             onFazerTest= {
@@ -67,7 +86,7 @@ export default function Main({ navigation }) {
             data={data.item} 
           />)
         }
-        onRefresh={() => carregar()}
+        onRefresh={() => loadData()}
         refreshing={loading}
       />
     </Container>

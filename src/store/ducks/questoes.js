@@ -1,6 +1,7 @@
 export const Types = {
   ADD_QUESTOES: 'questoes/ADD',
   RESPONDER_QUESTAO: 'questoes/FINALIZAR',
+  RESETAR: 'questoes/RESETAR',
 };
 
 const INITIAL_STATE = []
@@ -16,6 +17,8 @@ export default function reducer(state = INITIAL_STATE, action) {
           respostaUsuario: action.resp
         } : questao  
       )
+    case Types.RESETAR:
+        return INITIAL_STATE;
     default:
       return state;
   }

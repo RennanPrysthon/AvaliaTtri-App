@@ -25,9 +25,14 @@ import {
 export default function DetalheProva({ route, navigation }) {
 
   const dispacth = useDispatch();
+  const auth = useSelector(state => state.auth);
 
   const onCarregarProva = async (id) => {
-    await api.get(`provas/${id}`)
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': auth.token
+    }
+    await api.get(`provas/${id}`, {headers})
       .then(res => {
         var prova = {}
         prova.id = res.data.id;
@@ -44,7 +49,8 @@ export default function DetalheProva({ route, navigation }) {
 
         dispacth({type: provasTypes.ADD_PROVA, provas: prova});
         dispacth({type: questoesTypes.ADD_QUESTOES, questoes: questoes});
-      });
+      })
+      .catch(err => console.log(err));
   }
 
   const { prova } = route.params;

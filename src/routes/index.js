@@ -12,6 +12,7 @@ import SideBar from '../components/SideBar/index';
 import Login from '../pages/Login/index';
 import Header from '../components/Header/index';
 import HeaderBack from '../components/HeaderBack/index';
+import { useSelector } from 'react-redux';
 
 const Drawer = createDrawerNavigator();
 
@@ -95,10 +96,30 @@ const Logged = () => (
   </Stack.Navigator>
 );
 
-const Router = () => (
-  <NavigationContainer>
-    <Logged />
-  </NavigationContainer>
+const Loggout = () => (
+  <Stack.Navigator>
+    <Stack.Screen 
+      name="Login"
+      options={{
+        headerShown: false
+      }}
+      component={Login}
+    />
+  </Stack.Navigator>
 );
+
+const Router = () => {
+  const auth = useSelector(state => state.auth);
+  
+  React.useEffect(() => {
+
+  }, [auth]) 
+
+  return (
+    <NavigationContainer>
+      {auth.isLogged ? <Logged /> : <Loggout />}
+    </NavigationContainer>
+  )
+};
 
 export default Router;

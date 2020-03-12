@@ -1,4 +1,8 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { Types as AuthT} from '../../store/ducks/auth';
+import { Types as QuestT} from '../../store/ducks/questoes';
+import { Types as ProvaT} from '../../store/ducks/provas';
 
 
 import { 
@@ -15,10 +19,18 @@ import {
 
 export default function SideBar({ state, navigation, descriptors}) {
   const routeName =state.routes[state.index].name;
+  const dispatch = useDispatch();
 
   const onChange = name => {
     navigation.navigate(name);
   }
+
+  const onLogout = () => {
+    dispatch({type: AuthT.LOGOUT});
+    dispatch({type: QuestT.RESETAR});
+    dispatch({type: ProvaT.RESETAR});
+  }
+
   return (
     <Container>
       <Header>
@@ -38,6 +50,13 @@ export default function SideBar({ state, navigation, descriptors}) {
         >
           <MenuIcon name="home" size={22} selected={routeName == 'Login'}/>
           <MenuLabel selected={routeName == 'Login'}>Home</MenuLabel>
+        </MenuItem>
+        <MenuItem 
+          onPress={() => onLogout()}
+          selected={false}
+        >
+          <MenuIcon name="home" size={22} selected={false}/>
+          <MenuLabel selected={false}>Home</MenuLabel>
         </MenuItem>
       </Menu>
       <Footer>

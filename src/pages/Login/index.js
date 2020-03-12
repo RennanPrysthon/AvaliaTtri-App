@@ -17,8 +17,13 @@ import {
   Link
 } from "./styles";
 
+import { Types } from "../../store/ducks/auth";
+import { useSelector, useDispatch } from 'react-redux';
+import api from '../../services/api';
 
 export default function Login({ navigation }) {
+  const auth = useSelector(state => state.auth);
+  const dispatch = useDispatch();
 
   const [emailValue, setEmailValue] = useState({ value: '', error: false, });
   const onEmailText = text => setEmailValue({ value: text, error: false, })
@@ -38,7 +43,20 @@ export default function Login({ navigation }) {
 
     if(passValue.value == '' || emailValue.value == '') return;
 
-    navigation.navigate('Logged')
+    onLogar();
+  }
+
+  const onLogar = async () => {
+    await api.post('login', {
+      email: emailValue.value,
+      senha: passValue.value
+    })
+    .then(res => {
+      dispatch({type: Types.LOGIN, id: res.data.user_id, token: res.data.token})
+    })
+    .catch(err => {
+      setEmailValue({...emailValue, "error": true})
+    });
   }
 
   return (
