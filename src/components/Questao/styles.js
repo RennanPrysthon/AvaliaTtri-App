@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-  padding: 10px;  
 `;
 
 export const Enunciado = styled.Text`
@@ -9,21 +8,27 @@ export const Enunciado = styled.Text`
 `;
 
 export const Header = styled.View`
-  padding: 15px 10px;
+  padding: 15px 20px;
   background-color: #fff;
+  margin-bottom: 5px;  
+  border-bottom-width: 2px;
+  border-color: #444;
 `;
 
 export const Alternativas = styled.View`
-  padding: 10px;
+  padding: 20px;
 `;
 
 export const Alternativa = styled.Text`
-  font-size: 18px;
-  padding: 10px;
-  margin-bottom: 7px;
-  color: ${props => props.isPresent ? '#fff' : '#222'};
-  background-color: ${props => props.isPresent ? '#348' : '#bbb'};
-  border: ${props => props.isPresent ? '1px' : '2px'};
-  border-color: ${props => props.isPresent ? '#34f' : '#222'};
-  border-radius: 3px;
+  font-size: 16px;
+  margin: 5px 0px;  
+  border: 2px;
+  border-radius: 5px;
+  padding: 15px;
+  background-color: ${props => props.isPresent ? '#000' : "#fafafa"};
+  color: ${props => props.isPresent ? "#fafafa" : "#000"};
+`;
+
+export const Link = styled.TouchableOpacity`
+
 `;

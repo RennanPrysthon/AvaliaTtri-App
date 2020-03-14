@@ -28,7 +28,7 @@ export default function Main({ navigation }) {
     }
     api.get(`/provas?id=${auth.user.user_id}`, {headers})    
     .then(resp => {
-        setData(resp.data);
+        setData(resp.data.content);
       })
       .catch(err => console.log(err));
     setLoading(false);
@@ -40,9 +40,9 @@ export default function Main({ navigation }) {
       'Content-Type': 'application/json',
       'Authorization': auth.token
     }
-    api.get(`/provas?id=${auth.user.user_id}`, {headers})    
+    api.get(`/provas?id=${auth.user.user_id}?page=0`, {headers})    
     .then(resp => {
-        setNovos(resp.data);
+        setNovos(resp.data.content);
       })
       .catch(err => console.log(err));
     setLoading(false);
