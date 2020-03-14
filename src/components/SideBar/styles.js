@@ -41,6 +41,22 @@ export const MenuLabel = styled.Text`
   margin-left: 5px;
 `;
 
+export const GetOutButton = styled.TouchableOpacity`
+  flex-direction: row;
+  padding: 10px;
+  align-items: center;
+`;
+
+export const GetOutText = styled.Text`
+  color: #fff;
+  font-size: 18px;
+  margin-left: 5px;
+`;
+
+export const GetOutIcon = styled(Icon)`
+  color: #fff;
+`;
+
 export const Footer = styled.View`
   background-color: #555;
 `;

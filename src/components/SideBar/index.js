@@ -4,7 +4,6 @@ import { Types as AuthT} from '../../store/ducks/auth';
 import { Types as QuestT} from '../../store/ducks/questoes';
 import { Types as ProvaT} from '../../store/ducks/provas';
 
-
 import { 
   Container,
   Header, 
@@ -14,7 +13,10 @@ import {
   MenuLabel,
   MenuIcon,
   Footer,
-  FooterAction
+  FooterAction,
+  GetOutButton,
+  GetOutText,
+  GetOutIcon
 } from "./styles";
 
 export default function SideBar({ state, navigation, descriptors}) {
@@ -45,23 +47,21 @@ export default function SideBar({ state, navigation, descriptors}) {
           <MenuLabel selected={routeName == 'Home'}>Home</MenuLabel>
         </MenuItem>
         <MenuItem 
-          onPress={() =>onChange('Login')}
-          selected={routeName == 'Login'}
+          onPress={() =>onChange('Perfil')}
+          selected={routeName == 'Perfil'}
         >
-          <MenuIcon name="home" size={22} selected={routeName == 'Login'}/>
-          <MenuLabel selected={routeName == 'Login'}>Home</MenuLabel>
-        </MenuItem>
-        <MenuItem 
-          onPress={() => onLogout()}
-          selected={false}
-        >
-          <MenuIcon name="home" size={22} selected={false}/>
-          <MenuLabel selected={false}>Home</MenuLabel>
+          <MenuIcon name="person" size={22} selected={routeName == 'Perfil'}/>
+          <MenuLabel selected={routeName == 'Perfil'}>Perfil</MenuLabel>
         </MenuItem>
       </Menu>
       <Footer>
         <FooterAction>
-
+          <GetOutButton
+            onPress={() => onLogout()}
+          >
+            <GetOutIcon name="exit-to-app" size={22}/>
+            <GetOutText>Sair</GetOutText>
+          </GetOutButton>
         </FooterAction>
       </Footer>
     </Container>
