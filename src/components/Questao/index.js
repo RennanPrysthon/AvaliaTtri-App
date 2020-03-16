@@ -40,7 +40,7 @@ export default function Questao({data, onSelect}) {
       </Header>
       <Alternativas>
         {alternativas.map(p => (
-          <Link onPress={() => onHandleSelect(p)}>
+          <Link key={p.key} onPress={() => onHandleSelect(p)}>
             <Alternativa
               isPresent={p.key == resp}>
               {p.key}) {p.value}

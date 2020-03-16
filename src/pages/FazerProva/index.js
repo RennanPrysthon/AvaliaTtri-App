@@ -1,102 +1,142 @@
 import React, {useState, useEffect} from 'react';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import {Container, Controle, Link, Counter, Submit, Text} from './styles';
-import {useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
-import Questao from '../../components/Questao/index';
-import {Types} from '../../store/ducks/questoes';
-import HeaderBack from '../../components/HeaderBack/index';
+import { Container, Loading } from './styles';
+import Controles from '../../components/Controles';
+import HeaderBack from '../../components/HeaderBack';
+import Questao from '../../components/Questao';
+import FinalizarProva from '../../components/FinalizarProva';
+
+import { Creators as provaAction } from '../../store/ducks/provas';
+import { Creators as questoesActions} from '../../store/ducks/questoes';
+import api from '../../services/api';
 
 export default function FazerProva({route, navigation}) {
-
   const {id, title} = route.params;
-  const [position, setPosition] = useState(0);
-  const [podeFinalizar, setPodeFinalizar] = useState(false);
+  const [questoes, setQuestoes] = useState([]);
+  const [page, setPage] = useState(0);
+  const [total, setTotal] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [podeFinalizar, setPodeFinalizar] = useState();
 
-  const questoes = useSelector(state => state.questoes);
+  const questoesState = useSelector(state => state.questoes);
 
-  var data = questoes.filter(q => q.idProva == id);
-
-  var count = 0;
-
-  data.map(p => count++);
+  const auth = useSelector(state => state.auth);
 
   const dispatch = useDispatch();
-
-  var Finalizar = () =>{
-    return (
-      <Submit
-        podeFinalizar={false}
-        onPress={() => console.log('faz nada')} 
-      >
-        <Text>Finalizar prova</Text>
-      </Submit>
+  
+  const mapearQuestoes = () => {
+    setLoading(true);
+    var data = [];
+    var count = 0;
+    questoesState.map(q => {
+        if(q.idProva == id) {
+          data.push(q);
+          count++;
+        }
+      }
     );
-  } 
+    setTotal(data.length - 1)
+    setQuestoes(data);
+    setLoading(false);
+  }
+
+  const podeFinalizarProva = () => {
+    var valor = true;
+    questoes.map(q => {
+     if(q.respostaUsuario == '') {
+       valor = false;
+     } 
+    });
+    setPodeFinalizar(valor);
+  }
+
+  const montarProva = () => {
+    var provaEnviada = {};
+    provaEnviada.aluno_id = auth.user.user_id;
+    provaEnviada.prova_id = id;
+    provaEnviada.questaoRespondidaDTOS = [];
+
+    questoes.map(
+      q => {
+        provaEnviada.questaoRespondidaDTOS.push(
+          {
+            id_questao: q.id,
+            alternativa_usuario: q.respostaUsuario
+          }
+        )
+      }
+    );
+    return provaEnviada;
+  }
+  
+  async function enviarProva()  {
+   
+    var provaEnviada = await montarProva();
+
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: auth.token,
+    };
+    try {
+      await api.post(`/provas/finalizar`, provaEnviada, {headers})
+      .then(res => {
+        dispatch(provaAction.finalizarProva(provaEnviada.prova_id));
+        console.log('FazerProva: colocando como finalizada');
+        navigation.navigate('Home')
+      });
+    } catch (e) {
+      dispatch(provaAction.enviarProva(provaEnviada.prova_id));
+      console.log('FazerProva: colocando como enviar');
+    }
+  }
 
   useEffect(() => {
-    data = questoes.filter(q => q.idProva == id);
+    podeFinalizarProva();
+  }, [page]);
 
-    var podeFinalizar = false;
-    data.map(q => {
-      if(q.respostaUsuario != '') {
-        podeFinalizar = true;
-      } else {
-        podeFinalizar = false;
-      }
-    });
-    setPodeFinalizar(podeFinalizar);
-  }, [position]);
+  useEffect(() => {
+    mapearQuestoes();
+  }, []);
 
-  const Selected = () => (
-    <Questao
-      data={data[position]}
-      onSelect={resp => {
-        dispatch({
-          type: Types.RESPONDER_QUESTAO,
-          id: data[position].id,
-          resp: resp,
-        });
-      }}
-    />
-  );
+  useEffect(() => {
+    mapearQuestoes();
+  }, [questoesState]);
 
   return (
     <>
-      <HeaderBack navigation={navigation} title={title}/>
+      <HeaderBack 
+        navigation={navigation} 
+        title={title}
+      />
+      <Controles 
+        total={total + 1}
+        page={page}
+        onBack={() => setPage(page - 1)}
+        onFoward={() => setPage(page + 1)}
+      />
       <Container>
-        <Controle>
-          <Link
-            onPress={() => {
-              if (position >= 1) setPosition(position - 1);
-            }}>
-            <Icon name="skip-previous" size={28} color="#000" />
-          </Link>
-          <Counter>
-            {position + 1}/{count}
-          </Counter>
-          <Link
-            onPress={() => {
-              if (position < count - 1) setPosition(position + 1);
-            }}>
-            <Icon name="skip-next" size={28} color="#000" />
-          </Link>
-        </Controle>
-        <Selected />
-        {count == position + 1 && (
-          <Submit
-            podeFinalizar={podeFinalizar}
-            onPress={() => {
-              if(podeFinalizar) {
-                console.log('Prova finalizada')
-              }
-            
-            }} 
-          >
-            <Text>Finalizar prova</Text>
-          </Submit>
-        )}
+      {
+        loading && 
+        <Loading size="large" color="#234"/>
+      }
+      {
+        !loading &&
+        page < total + 1 &&
+        <Questao 
+          data={questoes[page]}
+          onSelect={(resp) => dispatch(questoesActions.responderQuestao(questoes[page].id, resp))}
+        />}
+      {
+        !loading && page == total + 1 && 
+        <FinalizarProva 
+          nomeProva={title}
+          podeFinalizar={podeFinalizar}
+          idProva={id}
+          onFinalizar={(id) => enviarProva()}
+        />
+      }
       </Container>
     </>
   );

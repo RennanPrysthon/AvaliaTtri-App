@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-  flex: 1;
   padding: 10px;
   background-color: #fff;
   margin-top: 5px;
@@ -46,8 +45,13 @@ export const Submit = styled.TouchableOpacity`
   padding: 15px 20px;
   margin: 15px 5px 0px 5px;
   align-items: center;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const SubmitText = styled.Text`
   color: #fff;
 `;
+
+export const Loading = styled.ActivityIndicator``

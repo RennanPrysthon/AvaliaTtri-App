@@ -69,10 +69,12 @@ export default function Login({ navigation }) {
       </Header>
       <Form>
         <Input 
-          placeholder={"Login..."}
+          placeholder={"Email..."}
           onChangeText={onEmailText}
           value={emailValue.value}
           error={emailValue.error}        
+          autoCapitalize='none'
+          keyboardType='email-address'
         />
         <Input 
           placeholder={"Senha..."}

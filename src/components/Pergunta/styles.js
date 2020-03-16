@@ -34,7 +34,7 @@ export const ListItem = styled.View`
 
 export const Key = styled.Text`
   color: #fff;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
 `;
 
@@ -42,6 +42,7 @@ export const Value = styled.Text`
   color: #fff;
   font-size: 14px;
   margin-left: 5px;
+  padding-right: 5px;
 `;
 
 export const Footer = styled.Text`

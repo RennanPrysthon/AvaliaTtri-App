@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-import { Text } from 'react-native';
-
-import Reactotron from 'reactotron-react-native';
 import api from '../../services/api';
 import Pergunta from '../../components/Pergunta/index';
+import { useSelector } from 'react-redux';
+
+import { ActivityIndicator} from 'react-native';
 
 import { 
   Container
@@ -13,25 +13,34 @@ import {
 export default function Resultado({ route,  navigation }) {
 
   const [perguntas, setPerguntas] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const auth = useSelector(state => state.auth);
 
   useEffect(() => {
     const {idUser, idProva} = route.params;
-    console.log(`provas/resultado?idUsuario=${idUser}&idProva=${idProva}`)
 
-    const loadResult = async (idUser, idProva) => {
-      await api.get(`resultado?idUsuario=${idUser}&idProva=${idProva}`)
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: auth.token,
+    };
+
+    const loadResult = async (idProva) => {
+      setLoading(true);
+      await api.get(`resultado?idUsuario=${auth.user.user_id}&idProva=${idProva}`, {headers})
         .then(res => {
-          setPerguntas(res.data.questaoRespondidas);
+          setPerguntas(res.data.questaoRespondidaDTOS);
         })
-        .catch(err => Reactotron.log(err))
+        .catch(err => console.log(err));
+      setLoading(false)
     }
-
-    loadResult(idUser, idProva);
+    loadResult(idProva);
   }, []);
 
   return (
     <Container>
-      {perguntas.map(
+      {loading && <ActivityIndicator size="large" color="#234"/>}
+      {!loading && perguntas.map(
         pergunta => <Pergunta key={pergunta.id} data={pergunta} />
       )}
     </Container>

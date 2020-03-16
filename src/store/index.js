@@ -10,11 +10,14 @@ const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   stateReconciler: autoMergeLevel2 ,
-  whitelist: ['auth', 'provas', 'questoes']
+  whitelist: ['auth', 'provas', 'questoes'],
+  blacklist: ['feed']
  };
 
 const pReducer = persistReducer(persistConfig, reducers);
 
-export const store = createStore(pReducer);
+export const store = createStore(
+  pReducer
+);
 export const persistor = persistStore(store);
 

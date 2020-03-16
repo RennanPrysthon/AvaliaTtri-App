@@ -16,6 +16,7 @@ import {
 } from './styles';
 
 export default function Pergunta({ data }) {
+  console.log(data)
   return (
     <Container>
       <Header
@@ -24,33 +25,25 @@ export default function Pergunta({ data }) {
         <Enunciado>
           {data.enunciado}
         </Enunciado>
-        {data.resposta == 'CORRETA' ? 
-            <Resultado>
-              Correta
-            </Resultado>
-            :
-            <Resultado>
-              Incorreta
-            </Resultado>
-          }
       </Header>
       <Body>
         <List>
           <ListItem>
-            <Key>A)</Key><Value>Valor alternativa</Value>  
+            <Key>A)</Key><Value>{data.alternativa_A}</Value>  
           </ListItem>
           <ListItem>
-            <Key>B)</Key><Value>Valor alternativa</Value>  
+            <Key>B)</Key><Value>{data.alternativa_B}</Value>  
           </ListItem>
           <ListItem>
-            <Key>C)</Key><Value>Valor alternativa</Value>  
+            <Key>C)</Key><Value>{data.alternativa_C}</Value>  
           </ListItem>
           <ListItem>
-            <Key>D)</Key><Value>Valor alternativa</Value>  
+            <Key>D)</Key><Value>{data.alternativa_D}</Value>  
           </ListItem>
           <ListItem>
-            <Key>E)</Key><Value>Valor alternativa</Value>  
+            <Key>E)</Key><Value>{data.alternativa_E}</Value>  
           </ListItem>
+        
         </List>
       </Body>
       <Footer>
