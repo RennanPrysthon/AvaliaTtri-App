@@ -10,7 +10,7 @@ import FinalizarProva from '../../components/FinalizarProva';
 
 import { Creators as provaAction } from '../../store/ducks/provas';
 import { Creators as questoesActions} from '../../store/ducks/questoes';
-import api from '../../services/api';
+import { Api } from '../../services/api';
 
 export default function FazerProva({route, navigation}) {
   const {id, title} = route.params;
@@ -74,19 +74,11 @@ export default function FazerProva({route, navigation}) {
   async function enviarProva()  {
    
     var provaEnviada = await montarProva();
-
-    const headers = {
-      'Content-Type': 'application/json',
-      Authorization: auth.token,
-    };
     try {
-      await api.post(`/provas/finalizar`, provaEnviada, {headers})
-      .then(res => {
-        dispatch(provaAction.finalizarProva(provaEnviada.prova_id));
-        console.log('FazerProva: colocando como finalizada');
-        navigation.navigate('Home')
-      });
-    } catch (e) {
+      const res = await Api.post(`/provas/finalizar`, provaEnviada);
+      dispatch(provaAction.finalizarProva(provaEnviada.prova_id));
+      navigation.navigate('Home')
+    } catch (error) {
       dispatch(provaAction.enviarProva(provaEnviada.prova_id));
       console.log('FazerProva: colocando como enviar');
     }

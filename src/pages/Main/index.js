@@ -1,104 +1,73 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo, useCallback} from 'react';
 
 import {RefreshControl} from 'react-native';
-import {Container} from './styles';
+import {Container, Part} from './styles';
 
 import {useDispatch, useSelector} from 'react-redux';
-import {Creators} from '../../store/ducks/feed';
 
-import api from '../../services/api';
+import { Api } from '../../services/api';
+import ProvaNaoSalva from '../../components/ProvaNaoSalva/index';
 
-import Prova from '../../components/Prova/index';
+import { Types as provasTypes, StatusProva } from "../../store/ducks/provas";
+import { Types as questoesTypes } from "../../store/ducks/questoes";
+import ProvaSalva from '../../components/ProvaSalva/index';
 
 export default function Main({navigation}) {
-  const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(null);
+  const [loading, setLoading] = useState(false)
+  const [page, setPage] = useState(0)
+  const [feed, setFeed] = useState([])
 
-  const dispacth = useDispatch();
-  const provas = useSelector(state => state.provas);
+  const provas = useSelector(state => state.provas)
   const auth = useSelector(state => state.auth);
-  const feed = useSelector(state => state.feed);
-  
-  const list = 
-      feed.map(prova => (
-        <Prova
-          key={prova.id}
-          onFazerTest={() =>
-            navigation.navigate('DetalheProva', {
-              prova: prova,
-            })
-          }
-          onVerResult={(idProva, idUser = 11) =>
-            navigation.navigate('Resultado', {
-              idProva: idProva,
-              idUser: idUser,
-            })
-          }
-          onContinuarTeste={id => {
-            navigation.navigate('FazerProva', {
-              id: id,
-              title: prova.titulo,
-            });
-          }}
-          data={prova}
-        />
-      ));
 
-  const loadMemoryData = () => {
-    dispacth(Creators.refreshFeed(provas));
+  const dispatch = useDispatch();
+
+  const reload = async () => {
+    setPage(0);
+    getProvas()
   }
 
-  const loadData = async () => {
-    if (loading) return;
+  const getProvas = useCallback(
+    async () => {
+      setLoading(true);
+    
+      const data = await Api.get(`/provas?id=${auth.user.user_id}&page=${page}`)
+      setFeed(data.content)
 
-    setLoading(true);
-    setPage(0);
-    const headers = {
-      'Content-Type': 'application/json',
-      Authorization: auth.token,
-    };
-    api
-      .get(`/provas?id=${auth.user.user_id}&page=0`, {headers})
-      .then(resp => {
-        dispacth(Creators.refreshFeed([]));
-        dispacth(Creators.refreshFeed(resp.data.content));
-        setTotalPages(resp.data.totalPages);
-        setPage(1);
-      })
-      .catch(err => {
-        loadMemoryData();
-      });
-    setLoading(false);
-  };
-
-  const carregar = async () => {
-    if (totalPages <= page) return;
-    if (page == 0) return;
-    if (loading) return;
-
-    console.log('carregar');
-
-    setPage(page + 1);
-    setLoading(true);
-
-    const headers = {
-      'Content-Type': 'application/json',
-      Authorization: auth.token,
-    };
-    api
-      .get(`/provas?id=${auth.user.user_id}&page=${page}`, {headers})
-      .then(resp => {
-        dispacth(Creators.loadFeed(resp.data.content));
-      })
-      .catch(err => console.log(err));
-
-    setLoading(false);
-  };
+      setLoading(false)
+    }
+  , [page])
 
   useEffect(() => {
-    loadData();
-  }, [provas]);
+    getProvas()
+  }, [getProvas])
+
+  const montarLista = useCallback(
+    (data) => data.filter(p => (!provas.map(p => p.id).includes(p.id))), [provas, feed]);
+
+  const onCarregarProva = async (id) => {
+    
+    const data = await Api.get(`provas/${id}`)
+
+    var prova = {}
+
+    prova.id = data.id;
+    prova.titulo = data.titulo;
+    prova.status = StatusProva.INICIADA;
+
+    var questoes = data.questoes
+    
+    prova.qtd_questoes = questoes.length;
+    questoes.map(q => {
+      q.respondida = false,
+      q.respostaUsuario = "",
+      q.idProva = prova.id
+    });
+
+    dispatch({type: provasTypes.ADD_PROVA, provas: prova});
+    dispatch({type: questoesTypes.ADD_QUESTOES, questoes: questoes});
+    navigation.navigate('FazerProva', {id: prova.id, titulo: prova.titulo});
+  }
 
   const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
     const paddingToBottom = 1;
@@ -108,17 +77,41 @@ export default function Main({navigation}) {
     );
   };
 
+  const List = useMemo(() => {
+    const res = montarLista(feed)
+    return (
+      <Part>
+        {provas.map(p => (
+          <ProvaSalva 
+            key={p.id} 
+            data={p} 
+            onContinuarTeste={(id) => navigation.navigate('FazerProva', {id: id, titulo: p.titulo})}
+            onVerResult={(id) => navigation.navigate('Resultado', {idProva: id})}
+          />
+        ))}
+        {res.map(p => (
+          <ProvaNaoSalva 
+            key={p.id} 
+            data={p} 
+            onFazerTest={(id) => onCarregarProva(id)}
+            onVerResult={(id) => navigation.navigate('Resultado', {idProva: id})}
+          />
+        ))}
+      </Part>
+    )
+  }, [provas, feed]);
+
   return (
     <Container
       refreshControl={
-        <RefreshControl refreshing={loading} onRefresh={loadData} />
+        <RefreshControl refreshing={loading} onRefresh={reload} />
       }
       onScroll={({nativeEvent}) => {
         if (isCloseToBottom(nativeEvent)) {
-          carregar();
+          setPage(page => page + 1)
         }
       }}>
-      {!loading && list}
+      {!loading && List}
     </Container>
   );
 }

@@ -5,14 +5,13 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
 import Main from '../pages/Main/index';
-import DetalheProva from '../pages/DetalheProva/index';
 import Resultado from '../pages/Resultado/index';
 import FazerProva from '../pages/FazerProva/index';
 import SideBar from '../components/SideBar/index';
 import Login from '../pages/Login/index';
 import Header from '../components/Header/index';
-import HeaderBack from '../components/HeaderBack/index';
 import { useSelector } from 'react-redux';
+import Perfil from '../pages/Perfil/index';
 
 const Drawer = createDrawerNavigator();
 
@@ -42,19 +41,6 @@ const MainScreen = ({navigation}) => (
       }}
     />
     <Stack.Screen
-      name="DetalheProva"
-      component={DetalheProva}
-      options={{
-        headerStyle: {
-          backgroundColor: '#456',
-        },
-        headerTintColor: '#fff',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-      }}
-    />
-    <Stack.Screen
       name="Resultado"
       component={Resultado}
       options={{
@@ -70,6 +56,19 @@ const MainScreen = ({navigation}) => (
   </Stack.Navigator>
 );
 
+const PerfilScreen = ({navigation}) => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="Home"
+      options={{
+        header: () => <Header navigation={navigation} />,
+      }}
+      component={Perfil}
+    />
+  </Stack.Navigator>
+);
+
+
 const StackMain = () => (
   <Drawer.Navigator
     drawerContent={({state, navigation, descriptors}) => (
@@ -80,7 +79,7 @@ const StackMain = () => (
       />
     )}>
     <Drawer.Screen name="Home" component={MainScreen} />
-    <Drawer.Screen name="Login" component={Login} />
+    <Drawer.Screen name="Perfil" component={PerfilScreen} />
   </Drawer.Navigator>
 );
 

@@ -16,7 +16,6 @@ import {
 } from './styles';
 
 export default function Pergunta({ data }) {
-  console.log(data)
   return (
     <Container>
       <Header
@@ -48,7 +47,7 @@ export default function Pergunta({ data }) {
       </Body>
       <Footer>
         <Texto>
-          Sua resposta: <Alternativa>{data.alternativa_usuario})</Alternativa>
+          Sua resposta: <Alternativa>{data.valorAlternativa_usuario})</Alternativa>
         </Texto>
       </Footer>
       

@@ -18,11 +18,10 @@ import {
 } from "./styles";
 
 import { Types } from "../../store/ducks/auth";
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import api from '../../services/api';
 
-export default function Login({ navigation }) {
-  const auth = useSelector(state => state.auth);
+export default function Login() {
   const dispatch = useDispatch();
 
   const [emailValue, setEmailValue] = useState({ value: '', error: false, });
@@ -32,7 +31,6 @@ export default function Login({ navigation }) {
   const onPassText = text => setPassValue({ value: text, error: false, })
 
   const onHandlerLogar = () => {
-  
     if(emailValue.value == '') {
       setEmailValue({...emailValue, "error": true})
     }
@@ -42,21 +40,19 @@ export default function Login({ navigation }) {
     }
 
     if(passValue.value == '' || emailValue.value == '') return;
-
     onLogar();
   }
 
   const onLogar = async () => {
-    await api.post('login', {
-      email: emailValue.value,
-      senha: passValue.value
-    })
-    .then(res => {
-      dispatch({type: Types.LOGIN, id: res.data.user_id, token: res.data.token})
-    })
-    .catch(err => {
+    try {
+      const { data } = await api.post('login', {
+        email: emailValue.value,
+        senha: passValue.value
+      });
+      dispatch({type: Types.LOGIN, id: data.user_id, token: data.token})
+    } catch (e) {
       setEmailValue({...emailValue, "error": true})
-    });
+    }
   }
 
   return (
@@ -69,7 +65,7 @@ export default function Login({ navigation }) {
       </Header>
       <Form>
         <Input 
-          placeholder={"Email..."}
+          placeholder={"Email.."}
           onChangeText={onEmailText}
           value={emailValue.value}
           error={emailValue.error}        

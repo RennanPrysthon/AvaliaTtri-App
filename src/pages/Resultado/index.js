@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import api from '../../services/api';
+import { Api } from '../../services/api';
 import Pergunta from '../../components/Pergunta/index';
 import { useSelector } from 'react-redux';
 
@@ -18,20 +18,14 @@ export default function Resultado({ route,  navigation }) {
   const auth = useSelector(state => state.auth);
 
   useEffect(() => {
-    const {idUser, idProva} = route.params;
-
-    const headers = {
-      'Content-Type': 'application/json',
-      Authorization: auth.token,
-    };
-
+    const { idProva} = route.params;
+    
     const loadResult = async (idProva) => {
       setLoading(true);
-      await api.get(`resultado?idUsuario=${auth.user.user_id}&idProva=${idProva}`, {headers})
-        .then(res => {
-          setPerguntas(res.data.questaoRespondidaDTOS);
-        })
-        .catch(err => console.log(err));
+
+      const data = await Api.get(`resultado?idUsuario=${auth.user.user_id}&idProva=${idProva}`);
+      setPerguntas(data.questaoRespondidaDTOS);
+
       setLoading(false)
     }
     loadResult(idProva);

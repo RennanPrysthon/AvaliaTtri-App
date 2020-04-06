@@ -46,13 +46,13 @@ export default function SideBar({ state, navigation, descriptors}) {
           <MenuIcon name="home" size={22} selected={routeName == 'Home'}/>
           <MenuLabel selected={routeName == 'Home'}>Home</MenuLabel>
         </MenuItem>
-        <MenuItem 
+        {/*<MenuItem 
           onPress={() =>onChange('Perfil')}
           selected={routeName == 'Perfil'}
         >
           <MenuIcon name="person" size={22} selected={routeName == 'Perfil'}/>
           <MenuLabel selected={routeName == 'Perfil'}>Perfil</MenuLabel>
-        </MenuItem>
+        </MenuItem>*/}
       </Menu>
       <Footer>
         <FooterAction>

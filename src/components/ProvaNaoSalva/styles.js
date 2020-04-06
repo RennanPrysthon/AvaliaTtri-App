@@ -41,7 +41,7 @@ export const Data = styled.Text`
 `;
 
 export const Submit = styled.TouchableOpacity`
-  background-color: ${props => props.feita == false ? '#000': '#4c5' };
+  background-color: #000;
   padding: 15px 20px;
   margin: 15px 5px 0px 5px;
   align-items: center;
