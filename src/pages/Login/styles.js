@@ -1,6 +1,9 @@
 import styled from 'styled-components/native';
+export const Container = styled.KeyboardAvoidingView`
+  flex: 1;
+`;
 
-export const Container = styled.ScrollView`
+export const ContainerList = styled.ScrollView`
   flex: 1;
   background-color: #fff;
 `;
@@ -8,11 +11,6 @@ export const Container = styled.ScrollView`
 export const Header = styled.View`
   justify-content: center;
   align-items: center;
-`;
-
-export const Form = styled.View`
-  flex:1;
-  padding: 20px;
 `;
 
 export const Input = styled.TextInput`

@@ -20,15 +20,18 @@ export const Alternativas = styled.View`
 `;
 
 export const Alternativa = styled.Text`
+  
+  margin-top: ${props => props.isImagePresent ? '20px' : "0"};
   font-size: 16px;
+  color: ${props => props.isPresent ? "#fafafa" : "#000"};
+  align-self: flex-start;
+`;
+
+export const Link = styled.TouchableOpacity`
   margin: 5px 0px;  
   border: 2px;
   border-radius: 5px;
   padding: 15px;
   background-color: ${props => props.isPresent ? '#000' : "#fafafa"};
-  color: ${props => props.isPresent ? "#fafafa" : "#000"};
-`;
-
-export const Link = styled.TouchableOpacity`
-
-`;
+  align-items: center;
+`; 

@@ -29,11 +29,9 @@ export default function FazerProva({route, navigation}) {
   const mapearQuestoes = () => {
     setLoading(true);
     var data = [];
-    var count = 0;
     questoesState.map(q => {
         if(q.idProva == id) {
           data.push(q);
-          count++;
         }
       }
     );
