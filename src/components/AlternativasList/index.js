@@ -43,14 +43,14 @@ export default function AlternativasList() {
         <Alternativa
           active={alternativa.valorAlternativa == data.respostaUsuario}
           onPress={() => selectAlternativa(alternativa.valorAlternativa)}
-        >
-          <Indicador active={alternativa.valorAlternativa == data.respostaUsuario }>
-            <Marked active={alternativa.valorAlternativa == data.respostaUsuario}/>
-          </Indicador>
+        >            
+          {alternativa.imagem &&  <Imagem tem_imagem={alternativa.imagem} link_imagem={alternativa.imagem.caminhoArquivo}  />}
           <Content>
-            {alternativa.imagem &&  <Imagem tem_imagem={alternativa.imagem} link_imagem={alternativa.imagem.caminhoArquivo}  />}
+            <Indicador active={alternativa.valorAlternativa == data.respostaUsuario }>
+              <Marked active={alternativa.valorAlternativa == data.respostaUsuario}/>
+            </Indicador>
             <TextoAlternativa>
-              {alternativa.textoAlternativa}
+              {alternativa.valorAlternativa}) {alternativa.textoAlternativa}
             </TextoAlternativa>
           </Content>
         </Alternativa>

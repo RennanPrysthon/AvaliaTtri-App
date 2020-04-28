@@ -5,22 +5,30 @@ export const Container = styled.ScrollView`
 `;
 
 export const Alternativa = styled.TouchableOpacity`
-  background-color: ${props => props.active ? '#eee' : '#fff'};
+  background-color: ${props => props.active ? '#e0e0e0' : '#fff'};
   flex-direction: column;
-  justify-content: space-between;
+  flex: 1;
+  justify-content: center;
+  border-width: ${StyleSheet.hairlineWidth}px;
 `;
 
 
 export const Content = styled.View`
-
+  margin: 10px 0;
+  padding: 20px;
+  flex-direction: row;
+  flex: 1;
+  align-items: center;
 `
 
 export const TextoAlternativa = styled.Text`
-  padding: 0 20px;
+  padding: 0 10px;
 `;
 
 
 export const Indicador = styled.View`
+
+  position: relative;
   width: 20px;
   height: 20px;
   border-radius: 20px;
