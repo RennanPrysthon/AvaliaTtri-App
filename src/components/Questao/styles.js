@@ -1,17 +1,19 @@
 import styled from 'styled-components/native';
-
+import { StyleSheet } from "react-native";
 export const Container = styled.View`
+  padding: 2px;
 `;
 
 export const Enunciado = styled.Text`
   font-size: 20px;
 `;
 
+
 export const Header = styled.View`
   padding: 15px 20px;
   background-color: #fff;
-  margin-bottom: 5px;  
-  border-bottom-width: 2px;
+  margin-bottom: 25px;  
+  border-bottom-width: 1.5px;
   border-color: #444;
 `;
 

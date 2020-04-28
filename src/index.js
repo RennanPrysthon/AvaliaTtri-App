@@ -9,6 +9,7 @@ import { PersistGate } from 'redux-persist/lib/integration/react';
 import './config/ReactotronConfig';
 
 import Router from './routes';
+import FlashMessage from 'react-native-flash-message';
 
 export default function App () {
 
@@ -20,6 +21,7 @@ export default function App () {
           <Router />
         </PersistGate>
       </Provider>
+      <FlashMessage position="top" />
     </>
   );
 }

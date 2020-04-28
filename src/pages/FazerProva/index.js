@@ -73,7 +73,7 @@ export default function FazerProva({route, navigation}) {
    
     var provaEnviada = await montarProva();
     try {
-      const res = await Api.post(`/provas/finalizar`, provaEnviada);
+      await Api.post(`/provas/finalizar`, provaEnviada);
       dispatch(provaAction.finalizarProva(provaEnviada.prova_id));
       navigation.navigate('Home')
     } catch (error) {
@@ -116,7 +116,9 @@ export default function FazerProva({route, navigation}) {
         page < total + 1 &&
         <Questao 
           data={questoes[page]}
-          onSelect={(resp) => dispatch(questoesActions.responderQuestao(questoes[page].id, resp))}
+          onSelect={(resp) => {
+            dispatch(questoesActions.responderQuestao(questoes[page].id, resp))
+          }}
         />}
       {
         !loading && page == total + 1 && 
@@ -124,7 +126,7 @@ export default function FazerProva({route, navigation}) {
           nomeProva={title}
           podeFinalizar={podeFinalizar}
           idProva={id}
-          onFinalizar={(id) => enviarProva()}
+          onFinalizar={() => enviarProva()}
         />
       }
       </Container>

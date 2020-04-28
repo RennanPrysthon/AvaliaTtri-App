@@ -21,6 +21,7 @@ import {
 import { Types } from "../../store/ducks/auth";
 import { useDispatch } from 'react-redux';
 import api from '../../services/api';
+import errorMessage from '../../utils/errorMessage';
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -33,11 +34,15 @@ export default function Login() {
 
   const onHandlerLogar = () => {
     if(emailValue.value == '') {
+      errorMessage('Email não pode estar vazio')
       setEmailValue({...emailValue, "error": true})
+      return;
     }
 
     if(passValue.value == '') {
+      errorMessage('Senha não pode estar vazia')
       setPassValue({...passValue, "error": true})
+      return;
     }
 
     if(passValue.value == '' || emailValue.value == '') return;
@@ -56,7 +61,8 @@ export default function Login() {
       });
       dispatch({type: Types.LOGIN, id: data.user_id, token: data.token})
     } catch (e) {
-      Alert.alert('Erro de autenticação', `${e}`)
+      console.log(e)
+      errorMessage(e)
       setEmailValue({...emailValue, "error": true})
     }
   }

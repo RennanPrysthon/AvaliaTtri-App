@@ -5,11 +5,11 @@ export default function Controles({page, onBack, onFoward, total}) {
   return (
     <Container>
       <Link onPress={() => page > 0 ? onBack(): {}}>
-        <Icon name="skip-previous"/>
+        <Icon name="left"/>
       </Link>
       <Count>{page + 1}/{total + 1}</Count>
       <Link onPress={() => page == total ? {} : onFoward()}>
-        <Icon name="skip-next"/>
+        <Icon name="right"/>
       </Link>
     </Container>
   );
