@@ -21,9 +21,7 @@ export default function ProvaSalva({ onVerResult, onContinuarTeste, data }) {
   const progresso = useMemo(() => {
     return (data.qtd_questoes_respondidas * 100) / data.qtd_questoes;
   }, [data])
-
-  console.log(data.qtd_questoes_respondidas)
-  console.log(data.qtd_questoes)
+  
   return (
     <Container>
       <Header>

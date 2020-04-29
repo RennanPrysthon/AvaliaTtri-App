@@ -16,7 +16,7 @@ export default function Main({navigation}) {
   const [loading, setLoading] = useState(false)
   const [page, setPage] = useState(0)
   const [feed, setFeed] = useState([])
-
+  const [last, setLast] = useState(false)
   const provas = useSelector(state => state.provas)
   const auth = useSelector(state => state.auth);
 
@@ -27,14 +27,27 @@ export default function Main({navigation}) {
     getProvas()
   }
 
+  const nextPage = () => {
+    if(last) {
+      return;
+    }
+    setPage(p => p + 1)
+  }
+
   const getProvas = useCallback(
     async () => {
-      setLoading(true);
     
       const data = await Api.get(`/provas?id=${auth.user.user_id}&page=${page}`)
-      setFeed(data.content)
+      setLast(data.last)
 
-      setLoading(false)
+      if(page == 0) {
+        setLoading(true);
+        setFeed(data.content)
+        setLoading(false)
+      } else {
+        setFeed(feed => [...feed, ...data.content])
+      }
+
     }
   , [page])
 
@@ -109,7 +122,7 @@ export default function Main({navigation}) {
       }
       onScroll={({nativeEvent}) => {
         if (isCloseToBottom(nativeEvent)) {
-          setPage(page => page + 1)
+          nextPage()
         }
       }}>
       {!loading && List}
