@@ -6,6 +6,7 @@ export const StatusProva = {
 
 export const Types = {
   ADD_PROVA: 'provas/ADD',
+  RESPONDER_QUESTAO: 'provas/RESPONDER',
   ENVIAR: 'provas/ENVIAR',
   FINALIZAR: 'provas/FINALIZAR',
   RESETAR: 'provas/RESETAR',
@@ -23,6 +24,14 @@ export default function reducer(state = INITIAL_STATE, action) {
           {
             ...prova,
             status: StatusProva.ENVIANDO
+          } : prova
+      );
+    case Types.RESPONDER_QUESTAO:
+      return state.map(prova =>
+        prova.id == action.payload.id ?
+          {
+            ...prova,
+            qtd_questoes_respondidas: prova.qtd_questoes_respondidas + 1
           } : prova
       );
     case Types.FINALIZAR:
@@ -53,4 +62,10 @@ export const Creators = {
       id
     }
   }),
+  responderQuestao: (id) => ({
+    type: Types.RESPONDER_QUESTAO,
+    payload: {
+      id
+    }
+  })
 }

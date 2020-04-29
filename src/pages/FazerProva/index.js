@@ -117,6 +117,9 @@ export default function FazerProva({route, navigation}) {
         <Questao 
           data={questoes[page]}
           onSelect={(resp) => {
+            if(questoes[page].respostaUsuario == '') {
+              dispatch(provaAction.responderQuestao(questoes[page].idProva))
+            }
             dispatch(questoesActions.responderQuestao(questoes[page].id, resp))
           }}
         />}

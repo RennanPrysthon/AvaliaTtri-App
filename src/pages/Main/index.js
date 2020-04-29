@@ -58,6 +58,7 @@ export default function Main({navigation}) {
     var questoes = data.questoes
     
     prova.qtd_questoes = questoes.length;
+    prova.qtd_questoes_respondidas = 0;
     questoes.map(q => {
       q.respondida = false,
       q.respostaUsuario = "",

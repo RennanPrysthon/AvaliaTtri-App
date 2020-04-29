@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {
+  useMemo
+} from 'react';
 
 import { 
   Container, 
@@ -7,12 +9,21 @@ import {
   Rodape,
   RodapeTexto,
   Submit,
-  SubmitText
+  SubmitText,
+  Progress,
+  Completed
 } from './styles';
 
 import { StatusProva } from '../../store/ducks/provas';
 
 export default function ProvaSalva({ onVerResult, onContinuarTeste, data }) {
+  
+  const progresso = useMemo(() => {
+    return (data.qtd_questoes_respondidas * 100) / data.qtd_questoes;
+  }, [data])
+
+  console.log(data.qtd_questoes_respondidas)
+  console.log(data.qtd_questoes)
   return (
     <Container>
       <Header>
@@ -24,9 +35,9 @@ export default function ProvaSalva({ onVerResult, onContinuarTeste, data }) {
             Pontuação: {data.pontuacao}
           </RodapeTexto>
           :
-          <RodapeTexto>
-            Quantidade de questoes: {data.qtd_questoes}
-          </RodapeTexto>
+          <Progress>
+            <Completed progress={progresso}/>
+          </Progress>
         }
         
       </Rodape>

@@ -55,3 +55,17 @@ export const SubmitText = styled.Text`
 `;
 
 export const Loading = styled.ActivityIndicator``
+
+export const Progress = styled.View`
+  margin: 5px 0 ;
+  flex-direction: row;
+  width: 100%;
+  border: 1px solid #333;
+  border-radius: 4px;
+`;
+
+export const Completed = styled.View`
+  border: 1px solid #333;
+  border-radius: 4px;
+  width: ${props => props.progress}%;
+`
