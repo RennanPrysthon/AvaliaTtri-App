@@ -9,9 +9,7 @@ export const Container = styled.View`
 export const Header = styled.View`
   width: 100%;
   flex-grow: 1;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
 `;
 
 export const Titulo = styled.Text`
@@ -19,6 +17,13 @@ export const Titulo = styled.Text`
   font-size: 16px;
   font-weight: bold;
   color: #333;
+`;
+
+export const Description = styled.Text`
+  flex: 1;
+  font-size: 14px;
+  font-weight: 200;
+  color: #5559;
 `;
 
 export const SubTitulo = styled.Text`

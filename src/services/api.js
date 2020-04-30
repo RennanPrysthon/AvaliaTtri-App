@@ -1,10 +1,9 @@
-import { Alert } from 'react-native'
 import axios from 'axios';
 import { store } from '../store/index';
 import { showMessage } from 'react-native-flash-message';
 
 const api = axios.create({
-  baseURL: 'http://159.203.31.148:8080/AvaliaTri-0.1/'
+  baseURL: 'https://avaliatriapi.herokuapp.com/'
 });
 
 const header = () => {

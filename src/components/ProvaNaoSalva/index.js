@@ -4,6 +4,7 @@ import {
   Container, 
   Header,
   Titulo,
+  Description,
   Rodape,
   RodapeTexto,
   Data,
@@ -12,13 +13,18 @@ import {
 } from './styles';
 
 export default function ProvaNaoSalva({ onVerResult, onFazerTest, data }) {  
+  console.log(data)
+  // isActivated
   return (
     <Container>
       <Header>
-        <Titulo>{data.titulo}</Titulo>
+        <Titulo>{data.title}</Titulo>
+        <Description>
+          {data.description}
+        </Description>
       </Header>
       <Rodape>
-        {data.status == 'FEITA' ? 
+        {data.statusProva == 'FEITA' ? 
           <RodapeTexto>
             Pontuação: {data.pontuacao}
           </RodapeTexto>
@@ -32,9 +38,11 @@ export default function ProvaNaoSalva({ onVerResult, onFazerTest, data }) {
         </Data>
         
       </Rodape>
-      {data.status == 'FEITA' ? 
+      {data.statusProva == 'FEITA' ? 
         <Submit
-          onPress={() => onVerResult(data.id)}
+          onPress={() => { 
+            onVerResult(data.resultado_id)
+          }}
         >
           <SubmitText>Ver resultado</SubmitText>
         </Submit>

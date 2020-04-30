@@ -11,6 +11,7 @@ import ProvaNaoSalva from '../../components/ProvaNaoSalva/index';
 import { Types as provasTypes, StatusProva } from "../../store/ducks/provas";
 import { Types as questoesTypes } from "../../store/ducks/questoes";
 import ProvaSalva from '../../components/ProvaSalva/index';
+import errorMessage from '../../utils/errorMessage';
 
 export default function Main({navigation}) {
   const [loading, setLoading] = useState(false)
@@ -36,18 +37,21 @@ export default function Main({navigation}) {
 
   const getProvas = useCallback(
     async () => {
-    
-      const data = await Api.get(`/provas?id=${auth.user.user_id}&page=${page}`)
-      setLast(data.last)
-
-      if(page == 0) {
-        setLoading(true);
-        setFeed(data.content)
+      try {
+        const data = await Api.get(`/usuarios/${auth.user.user_id}/provas?page=${page}`)
+        setLast(data.last)
+  
+        if(page == 0) {
+          setLoading(true);
+          setFeed(data.content)
+          setLoading(false)
+        } else {
+          setFeed(feed => [...feed, ...data.content])
+        }    
+      } catch (error) {
         setLoading(false)
-      } else {
-        setFeed(feed => [...feed, ...data.content])
+        errorMessage(error)
       }
-
     }
   , [page])
 
@@ -65,11 +69,10 @@ export default function Main({navigation}) {
     var prova = {}
 
     prova.id = data.id;
-    prova.titulo = data.titulo;
+    prova.titulo = data.title;
     prova.status = StatusProva.INICIADA;
-
     var questoes = data.questoes
-    
+
     prova.qtd_questoes = questoes.length;
     prova.qtd_questoes_respondidas = 0;
     questoes.map(q => {
@@ -99,7 +102,7 @@ export default function Main({navigation}) {
           <ProvaSalva 
             key={p.id} 
             data={p} 
-            onContinuarTeste={(id) => navigation.navigate('FazerProva', {id: id, titulo: p.titulo})}
+            onContinuarTeste={(id) => navigation.navigate('FazerProva', {id: id, titulo: p.title})}
             onVerResult={(id) => navigation.navigate('Resultado', {idProva: id})}
           />
         ))}

@@ -7,7 +7,6 @@ import {
   Header,
   Titulo,
   Rodape,
-  RodapeTexto,
   Submit,
   SubmitText,
   Progress,
@@ -17,11 +16,11 @@ import {
 import { StatusProva } from '../../store/ducks/provas';
 
 export default function ProvaSalva({ onVerResult, onContinuarTeste, data }) {
-  
   const progresso = useMemo(() => {
     return (data.qtd_questoes_respondidas * 100) / data.qtd_questoes;
   }, [data])
-  
+
+
   return (
     <Container>
       <Header>
@@ -29,9 +28,7 @@ export default function ProvaSalva({ onVerResult, onContinuarTeste, data }) {
       </Header>
       <Rodape>
         {data.status == StatusProva.FINALIZADA ? 
-          <RodapeTexto>
-            Pontuação: {data.pontuacao}
-          </RodapeTexto>
+          <></>
           :
           <Progress>
             <Completed progress={progresso}/>
@@ -41,7 +38,10 @@ export default function ProvaSalva({ onVerResult, onContinuarTeste, data }) {
       </Rodape>
       {data.status == StatusProva.FINALIZADA ? 
         <Submit
-          onPress={() => onVerResult(data.id)}
+          onPress={() =>{
+              console.log(data)
+             //onVerResult(data.id)
+            }}
         >
           <SubmitText>Ver resultado</SubmitText>
         </Submit>

@@ -11,6 +11,7 @@ import FinalizarProva from '../../components/FinalizarProva';
 import { Creators as provaAction } from '../../store/ducks/provas';
 import { Creators as questoesActions} from '../../store/ducks/questoes';
 import { Api } from '../../services/api';
+import errorMessage from '../../utils/errorMessage';
 
 export default function FazerProva({route, navigation}) {
   const {id, title} = route.params;
@@ -52,15 +53,16 @@ export default function FazerProva({route, navigation}) {
 
   const montarProva = () => {
     var provaEnviada = {};
-    provaEnviada.aluno_id = auth.user.user_id;
-    provaEnviada.prova_id = id;
-    provaEnviada.questaoRespondidaDTOS = [];
+    provaEnviada.usuario = auth.user.user_id;
+
+    provaEnviada.questoes_respondidas = [];
 
     questoes.map(
       q => {
-        provaEnviada.questaoRespondidaDTOS.push(
+        console.log(q)
+        provaEnviada.questoes_respondidas.push(
           {
-            id_questao: q.id,
+            questao: q.id,
             alternativa_usuario: q.respostaUsuario
           }
         )
@@ -72,12 +74,14 @@ export default function FazerProva({route, navigation}) {
   async function enviarProva()  {
    
     var provaEnviada = await montarProva();
+    console.log(provaEnviada)
     try {
-      await Api.post(`/provas/finalizar`, provaEnviada);
-      dispatch(provaAction.finalizarProva(provaEnviada.prova_id));
+      const data = await Api.post(`/provas/${id}/responder`, provaEnviada);
+      dispatch(provaAction.finalizarProva(id));
       navigation.navigate('Home')
     } catch (error) {
-      dispatch(provaAction.enviarProva(provaEnviada.prova_id));
+      errorMessage(error)
+      dispatch(provaAction.enviarProva(id));
       console.log('FazerProva: colocando como enviar');
     }
   }

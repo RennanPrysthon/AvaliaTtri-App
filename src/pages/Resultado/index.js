@@ -9,7 +9,7 @@ import { ActivityIndicator} from 'react-native';
 import { 
   Container
 } from './styles';
-
+import errorMessage from '../../utils/errorMessage';
 export default function Resultado({ route,  navigation }) {
 
   const [perguntas, setPerguntas] = useState([]);
@@ -22,19 +22,24 @@ export default function Resultado({ route,  navigation }) {
     
     const loadResult = async (idProva) => {
       setLoading(true);
-
-      const data = await Api.get(`resultado?idUsuario=${auth.user.user_id}&idProva=${idProva}`);
-      setPerguntas(data.questaoRespondidaDTOS);
-
+      try {
+        const data = await Api.get(`usuarios/${auth.user.user_id}/resultados/${idProva}`);
+        setPerguntas(data);
+              
       setLoading(false)
+      } catch (error) {
+        errorMessage(error)
+      }
+
     }
     loadResult(idProva);
   }, []);
 
+  if(loading) return <ActivityIndicator size="large" color="#234"/>;
+  return <></>;
   return (
     <Container>
-      {loading && <ActivityIndicator size="large" color="#234"/>}
-      {!loading && perguntas.map(
+      {perguntas.map(
         pergunta => <Pergunta key={pergunta.id} data={pergunta} />
       )}
     </Container>

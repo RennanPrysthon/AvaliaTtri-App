@@ -23,11 +23,11 @@ export default function AlternativasList() {
   const [alternativas, setAlternativas] = useState([]);
   useEffect(()=>{
     const alternativaList = [
-      {...data.alternativa_A},
-      {...data.alternativa_B},
-      {...data.alternativa_C},
-      {...data.alternativa_D},
-      {...data.alternativa_E},
+      {texto: data.alternativaA, valorAlternativa: 'A'},
+      {texto: data.alternativaB, valorAlternativa: 'B'},
+      {texto: data.alternativaC, valorAlternativa: 'C'},
+      {texto: data.alternativaD, valorAlternativa: 'D'},
+      {texto: data.alternativaE, valorAlternativa: 'E'},
     ]
     setAlternativas(alternativaList)
   },[data])
@@ -50,7 +50,7 @@ export default function AlternativasList() {
               <Marked active={alternativa.valorAlternativa == data.respostaUsuario}/>
             </Indicador>
             <TextoAlternativa>
-              {alternativa.valorAlternativa}) {alternativa.textoAlternativa}
+              {alternativa.valorAlternativa}) {alternativa.texto}
             </TextoAlternativa>
           </Content>
         </Alternativa>
