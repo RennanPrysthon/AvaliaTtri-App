@@ -15,6 +15,15 @@ import {
 export default function ProvaNaoSalva({ onVerResult, onFazerTest, data }) {  
   console.log(data)
   // isActivated
+
+  const acaoProva = () => {
+    if(data.statusProva == 'FEITA'){
+      onVerResult(data.resultado_id)
+    } else {
+      onFazerTest(data.id)
+    }
+  }
+
   return (
     <Container>
       <Header>
@@ -38,21 +47,9 @@ export default function ProvaNaoSalva({ onVerResult, onFazerTest, data }) {
         </Data>
         
       </Rodape>
-      {data.statusProva == 'FEITA' ? 
-        <Submit
-          onPress={() => { 
-            onVerResult(data.resultado_id)
-          }}
-        >
-          <SubmitText>Ver resultado</SubmitText>
-        </Submit>
-        :    
-        <Submit
-          onPress={() => onFazerTest(data.id)}
-        >
-          <SubmitText>Fazer teste</SubmitText>
-        </Submit>
-      }
+      <Submit feita={data.statusProva == 'FEITA'} onPress={acaoProva} >
+        <SubmitText>{ data.statusProva == 'FEITA' ? 'Ver resultado' : 'Fazer prova'}</SubmitText>
+      </Submit>
     </Container>
   );
 }
