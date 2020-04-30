@@ -61,7 +61,6 @@ export default function Login() {
       });
       dispatch({type: Types.LOGIN, id: data.user_id, token: data.token})
     } catch (e) {
-      console.log(e)
       errorMessage(e)
       setEmailValue({...emailValue, "error": true})
     }

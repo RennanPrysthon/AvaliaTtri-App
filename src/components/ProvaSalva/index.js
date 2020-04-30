@@ -20,7 +20,6 @@ export default function ProvaSalva({ onVerResult, onContinuarTeste, data }) {
     return (data.qtd_questoes_respondidas * 100) / data.qtd_questoes;
   }, [data])
 
-
   return (
     <Container>
       <Header>

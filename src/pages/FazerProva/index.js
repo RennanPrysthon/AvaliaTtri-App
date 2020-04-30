@@ -10,7 +10,7 @@ import FinalizarProva from '../../components/FinalizarProva';
 
 import { Creators as provaAction } from '../../store/ducks/provas';
 import { Creators as questoesActions} from '../../store/ducks/questoes';
-import { Api } from '../../services/api';
+import api from '../../services/api';
 import errorMessage from '../../utils/errorMessage';
 
 export default function FazerProva({route, navigation}) {
@@ -71,12 +71,11 @@ export default function FazerProva({route, navigation}) {
     return provaEnviada;
   }
   
-  async function enviarProva()  {
+  const enviarProva  = async () => {
    
     var provaEnviada = await montarProva();
-    console.log(provaEnviada)
     try {
-      const data = await Api.post(`/provas/${id}/responder`, provaEnviada);
+      await api.post(`/provas/${id}/responder`, provaEnviada);
       dispatch(provaAction.finalizarProva(id));
       navigation.navigate('Home')
     } catch (error) {
@@ -98,6 +97,31 @@ export default function FazerProva({route, navigation}) {
     mapearQuestoes();
   }, [questoesState]);
 
+
+    
+  if(loading) return <Loading size="large" color="#234"/>;
+  
+  if(page == total + 1){
+    return[
+      <HeaderBack 
+        navigation={navigation} 
+        title={title}
+      />,
+      <Controles 
+        total={total + 1}
+        page={page}
+        onBack={() => setPage(page - 1)}
+        onFoward={() => setPage(page + 1)}
+      />,
+      <FinalizarProva 
+        nomeProva={title}
+        podeFinalizar={podeFinalizar}
+        idProva={id}
+        onFinalizar={enviarProva}
+      />
+    ]
+  }
+  
   return (
     <>
       <HeaderBack 
@@ -111,31 +135,17 @@ export default function FazerProva({route, navigation}) {
         onFoward={() => setPage(page + 1)}
       />
       <Container>
-      {
-        loading && 
-        <Loading size="large" color="#234"/>
-      }
-      {
-        !loading &&
-        page < total + 1 &&
-        <Questao 
+       <Questao 
           data={questoes[page]}
           onSelect={(resp) => {
             if(questoes[page].respostaUsuario == '') {
               dispatch(provaAction.responderQuestao(questoes[page].idProva))
+              setPage(p => p + 1)
             }
             dispatch(questoesActions.responderQuestao(questoes[page].id, resp))
+            
           }}
-        />}
-      {
-        !loading && page == total + 1 && 
-        <FinalizarProva 
-          nomeProva={title}
-          podeFinalizar={podeFinalizar}
-          idProva={id}
-          onFinalizar={() => enviarProva()}
         />
-      }
       </Container>
     </>
   );

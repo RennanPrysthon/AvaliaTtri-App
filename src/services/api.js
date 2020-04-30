@@ -2,45 +2,25 @@ import axios from 'axios';
 import { store } from '../store/index';
 import { showMessage } from 'react-native-flash-message';
 
-const api = axios.create({
-  baseURL: 'https://avaliatriapi.herokuapp.com/'
+export const api = axios.create({
+  baseURL: 'https://avaliatriapi.herokuapp.com/',
+  timeout: 10000
 });
 
-const header = () => {
-  const { auth } =  store.getState();
-  return {
-    'Content-Type': 'application/json',
-    Authorization: auth.token,
-  };
-}
-
-export const Api = {
-  post: async (url, obj) => {
-    try {
-      const { data } = await api.post(url, obj, {headers: header()});
-      return data;
-    } catch (e) {
-      showMessage({
-        message: "Erro",
-        description: `${e}`,
-        type: "danger",
-        backgroundColor: "#ff7171", // background color
-      })
-    }
+api.interceptors.request.use(
+  config => {
+    const { auth } =  store.getState();
+    config.headers.Authorization = auth.token;
+    return config;
   },
-  get: async (url) => {
-    try{
-      const { data } = await api.get(url, {headers: header()});
-      return data;
-    } catch (e) {
-      showMessage({
-        message: "Erro",
-        description: `${e}`,
-        type: "danger",
-        backgroundColor: "#ff7171", // background color
-      })
-    }
-  },
-}
+  error => {
+    showMessage({
+      message: "Erro",
+      description: `${error}`,
+      type: "danger",
+      backgroundColor: "#ff7171", // background color
+    })
+  }
+)
 
 export default api;

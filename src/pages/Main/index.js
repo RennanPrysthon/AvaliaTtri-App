@@ -5,7 +5,7 @@ import {Container, Part} from './styles';
 
 import {useDispatch, useSelector} from 'react-redux';
 
-import { Api } from '../../services/api';
+import api from '../../services/api';
 import ProvaNaoSalva from '../../components/ProvaNaoSalva/index';
 
 import { Types as provasTypes, StatusProva } from "../../store/ducks/provas";
@@ -28,6 +28,10 @@ export default function Main({navigation}) {
     getProvas()
   }
 
+  useEffect(() => {
+    getProvas();
+  }, [provas])
+
   const nextPage = () => {
     if(last) {
       return;
@@ -38,8 +42,8 @@ export default function Main({navigation}) {
   const getProvas = useCallback(
     async () => {
       try {
-        const data = await Api.get(`/usuarios/${auth.user.user_id}/provas?page=${page}`)
-        setLast(data.last)
+        const {data} = await api.get(`/usuarios/${auth.user.user_id}/provas?page=${page}`)
+        console.log(data)
   
         if(page == 0) {
           setLoading(true);
@@ -64,7 +68,7 @@ export default function Main({navigation}) {
 
   const onCarregarProva = async (id) => {
     
-    const data = await Api.get(`provas/${id}`)
+    const {data} = await api.get(`provas/${id}`)
 
     var prova = {}
 

@@ -3,7 +3,7 @@ import React, {
   useState
 } from 'react';
 
-import {Api} from '../../services/api';
+import api from '../../services/api';
 import { useSelector } from 'react-redux';
 import { ActivityIndicator , RefreshControl} from 'react-native';
 import { 
@@ -24,8 +24,7 @@ export default function Perfil() {
 
   async function loadUserInfo() {
     setLoading(true);
-    const data = await Api.get(`/usuarios/${auth.user.user_id}/resultados`)
-
+    const {data} = await api.get(`/usuarios/${auth.user.user_id}/resultados`)
     setUser(data)
     setLoading(false);
     return data;
@@ -38,7 +37,6 @@ export default function Perfil() {
   if(loading) return <ActivityIndicator size="large"/>
 
   const reload = () => {
-    console.log('reloaded')
     loadUserInfo()
   }
 
@@ -61,7 +59,7 @@ export default function Perfil() {
         {user.quantidade_provas_respondidas > 0 &&
           
           user.provas_respondidas.map(p =>
-            <Prova>
+            <Prova key={p.id}>
               <Title>
                 {p.titulo}
               </Title>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Api } from '../../services/api';
+import api from '../../services/api';
 import Pergunta from '../../components/Pergunta/index';
 import { useSelector } from 'react-redux';
 
@@ -23,7 +23,7 @@ export default function Resultado({ route,  navigation }) {
     const loadResult = async (idProva) => {
       setLoading(true);
       try {
-        const data = await Api.get(`usuarios/${auth.user.user_id}/resultados/${idProva}`);
+        const data = await api.get(`usuarios/${auth.user.user_id}/resultados/${idProva}`);
         setPerguntas(data);
               
       setLoading(false)

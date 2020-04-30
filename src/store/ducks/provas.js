@@ -35,13 +35,7 @@ export default function reducer(state = INITIAL_STATE, action) {
           } : prova
       );
     case Types.FINALIZAR:
-      return state.map(prova =>
-        prova.id == action.payload.id ?
-          {
-            ...prova,
-            status: StatusProva.FINALIZADA
-          } : prova
-      );
+      return state.filter(prova => prova.id != action.payload.id);
     case Types.RESETAR:
       return INITIAL_STATE;
     default:
