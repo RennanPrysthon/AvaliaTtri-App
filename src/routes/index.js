@@ -59,11 +59,25 @@ const MainScreen = ({navigation}) => (
 const PerfilScreen = ({navigation}) => (
   <Stack.Navigator>
     <Stack.Screen
-      name="Home"
+      name="Perfil"
       options={{
         header: () => <Header navigation={navigation} />,
       }}
       component={Perfil}
+    />
+
+    <Stack.Screen
+      name="Resultado"
+      component={Resultado}
+      options={{
+        headerStyle: {
+          backgroundColor: '#456',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }}
     />
   </Stack.Navigator>
 );

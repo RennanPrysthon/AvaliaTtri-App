@@ -16,12 +16,13 @@ import {
   Title,
   Nota
 } from './styles';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Perfil() {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({})
   const auth = useSelector(state => state.auth);
-
+  const navigation = useNavigation()
   async function loadUserInfo() {
     setLoading(true);
     const {data} = await api.get(`/usuarios/${auth.user.user_id}/resultados`)
@@ -38,6 +39,10 @@ export default function Perfil() {
 
   const reload = () => {
     loadUserInfo()
+  }
+
+  const verResultado = (id) => {
+    navigation.navigate('Resultado', {idProva: id});
   }
 
   return (
@@ -59,7 +64,9 @@ export default function Perfil() {
         {user.quantidade_provas_respondidas > 0 &&
           
           user.provas_respondidas.map(p =>
-            <Prova key={p.id}>
+            <Prova key={p.id}
+              onPress={() => verResultado(p.id)}
+            >
               <Title>
                 {p.titulo}
               </Title>

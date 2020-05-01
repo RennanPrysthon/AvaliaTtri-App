@@ -11,6 +11,7 @@ api.interceptors.request.use(
   config => {
     const { auth } =  store.getState();
     config.headers.Authorization = auth.token;
+    config.headers['Content-Type'] = 'aplication/json';
     return config;
   },
   error => {

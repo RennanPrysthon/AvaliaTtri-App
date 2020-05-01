@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 
 import api from '../../services/api';
-import Pergunta from '../../components/Pergunta/index';
 import { useSelector } from 'react-redux';
 
 import { ActivityIndicator} from 'react-native';
 
 import { 
-  Container
+  Container,
+  Questao
 } from './styles';
 import errorMessage from '../../utils/errorMessage';
 export default function Resultado({ route,  navigation }) {
 
-  const [perguntas, setPerguntas] = useState([]);
+  const [questoes, setQuestoes] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const auth = useSelector(state => state.auth);
@@ -24,7 +24,7 @@ export default function Resultado({ route,  navigation }) {
       setLoading(true);
       try {
         const data = await api.get(`usuarios/${auth.user.user_id}/resultados/${idProva}`);
-        setPerguntas(data);
+        console.log(data)
               
       setLoading(false)
       } catch (error) {
@@ -39,9 +39,11 @@ export default function Resultado({ route,  navigation }) {
   return <></>;
   return (
     <Container>
-      {perguntas.map(
-        pergunta => <Pergunta key={pergunta.id} data={pergunta} />
-      )}
+      {questoes.map(q => (
+        <Questao>
+          
+        </Questao>
+      ))}
     </Container>
   );
 }
