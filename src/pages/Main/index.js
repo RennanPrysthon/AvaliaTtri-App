@@ -42,9 +42,7 @@ export default function Main({navigation}) {
   const getProvas = useCallback(
     async () => {
       try {
-        const {data} = await api.get(`/usuarios/${auth.user.user_id}/provas?page=${page}`)
-        console.log(data)
-  
+        const {data} = await api.get(`/usuarios/${auth.user.user_id}/provas?page=${page}`)  
         if(page == 0) {
           setLoading(true);
           setFeed(data.content)

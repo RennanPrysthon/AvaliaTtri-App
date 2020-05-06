@@ -59,7 +59,6 @@ export default function FazerProva({route, navigation}) {
 
     questoes.map(
       q => {
-        console.log(q)
         provaEnviada.questoes_respondidas.push(
           {
             questao: q.id,
@@ -75,19 +74,19 @@ export default function FazerProva({route, navigation}) {
    
     var provaEnviada = await montarProva();
     try {
-      await api.post(`/provas/${id}/responder`, provaEnviada);
+      const response = await api.post(`/provas/${id}/responder`, provaEnviada);
       dispatch(provaAction.finalizarProva(id));
       navigation.navigate('Home')
     } catch (error) {
       errorMessage(error)
       dispatch(provaAction.enviarProva(id));
-      console.log('FazerProva: colocando como enviar');
+      console.log(error);
     }
   }
 
   useEffect(() => {
     podeFinalizarProva();
-  }, [page]);
+  }, [page, questoesState]);
 
   useEffect(() => {
     mapearQuestoes();

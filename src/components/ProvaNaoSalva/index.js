@@ -13,7 +13,6 @@ import {
 } from './styles';
 
 export default function ProvaNaoSalva({ onVerResult, onFazerTest, data }) {  
-  console.log(data)
   // isActivated
 
   const acaoProva = () => {

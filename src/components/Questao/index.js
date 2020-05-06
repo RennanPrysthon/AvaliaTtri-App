@@ -21,8 +21,8 @@ export default function Questao({data, onSelect}) {
   return (
     <Container>
       <Header>
-        <Imagem tem_imagem={data.tem_imagem} link_imagem={data.imagem_link}/>
-        <Enunciado>{data.enunciado}</Enunciado>
+        <Imagem tem_imagem={data.temImagem} link_imagem={data.imagem}/>
+        <Enunciado>{data.enunciado}a</Enunciado>
       </Header>
       <RespostaContext.Provider value={{data, resp, setResp, onHandleSelect}}>
         <AlternativasList />

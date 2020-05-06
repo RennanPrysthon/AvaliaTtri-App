@@ -23,11 +23,11 @@ export default function AlternativasList() {
   const [alternativas, setAlternativas] = useState([]);
   useEffect(()=>{
     const alternativaList = [
-      {texto: data.alternativaA, valorAlternativa: 'A'},
-      {texto: data.alternativaB, valorAlternativa: 'B'},
-      {texto: data.alternativaC, valorAlternativa: 'C'},
-      {texto: data.alternativaD, valorAlternativa: 'D'},
-      {texto: data.alternativaE, valorAlternativa: 'E'},
+      {texto: data.alternativaA, valorAlternativa: 'A', imagemAlternativa: data.alternativaAImg},
+      {texto: data.alternativaB, valorAlternativa: 'B', imagemAlternativa: data.alternativaBImg},
+      {texto: data.alternativaC, valorAlternativa: 'C', imagemAlternativa: data.alternativaCImg},
+      {texto: data.alternativaD, valorAlternativa: 'D', imagemAlternativa: data.alternativaDImg},
+      {texto: data.alternativaE, valorAlternativa: 'E', imagemAlternativa: data.alternativaEImg},
     ]
     setAlternativas(alternativaList)
   },[data])
@@ -44,7 +44,7 @@ export default function AlternativasList() {
           active={alternativa.valorAlternativa == data.respostaUsuario}
           onPress={() => selectAlternativa(alternativa.valorAlternativa)}
         >            
-          {alternativa.imagem &&  <Imagem tem_imagem={alternativa.imagem} link_imagem={alternativa.imagem.caminhoArquivo}  />}
+          <Imagem tem_imagem={alternativa.imagemAlternativa != "" } link_imagem={alternativa.imagemAlternativa}  />
           <Content>
             <Indicador active={alternativa.valorAlternativa == data.respostaUsuario }>
               <Marked active={alternativa.valorAlternativa == data.respostaUsuario}/>

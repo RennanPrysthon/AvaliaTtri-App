@@ -68,7 +68,12 @@ export default function Perfil() {
               onPress={() => verResultado(p.id)}
             >
               <Title>
-                {p.titulo}
+                {
+                  p.titulo.length > 20 && (p.titulo.substring(0, 20) + '...')
+                }
+                {
+                  p.titulo.length <= 20 && p.titulo
+                }
               </Title>
               <Nota nota ={p.nota}>
                 pontuação {p.nota}
