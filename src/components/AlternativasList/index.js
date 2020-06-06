@@ -20,37 +20,27 @@ import Imagem from '../Imagem';
 export default function AlternativasList() {
 
   const { data, onHandleSelect } = useContext(RespostaContext);
-  const [alternativas, setAlternativas] = useState([]);
-  useEffect(()=>{
-    const alternativaList = [
-      {texto: data.alternativaA, valorAlternativa: 'A', imagemAlternativa: data.alternativaAImg},
-      {texto: data.alternativaB, valorAlternativa: 'B', imagemAlternativa: data.alternativaBImg},
-      {texto: data.alternativaC, valorAlternativa: 'C', imagemAlternativa: data.alternativaCImg},
-      {texto: data.alternativaD, valorAlternativa: 'D', imagemAlternativa: data.alternativaDImg},
-      {texto: data.alternativaE, valorAlternativa: 'E', imagemAlternativa: data.alternativaEImg},
-    ]
-    setAlternativas(alternativaList)
-  },[data])
+  const [alternativas, setAlternativas] = useState(data.alternativas);
+
 
   const selectAlternativa = (valor) => {
     onHandleSelect(valor)
   }
 
-
   return (
     <Container>
       {alternativas.map(alternativa =>
         <Alternativa
-          active={alternativa.valorAlternativa == data.respostaUsuario}
-          onPress={() => selectAlternativa(alternativa.valorAlternativa)}
+          active={alternativa.alternativa == data.respostaUsuario}
+          onPress={() => selectAlternativa(alternativa.alternativa)}
         >            
-          <Imagem tem_imagem={alternativa.imagemAlternativa != "" } link_imagem={alternativa.imagemAlternativa}  />
+          <Imagem tem_imagem={alternativa.temImagem != "" } link_imagem={alternativa.imagem}  />
           <Content>
-            <Indicador active={alternativa.valorAlternativa == data.respostaUsuario }>
-              <Marked active={alternativa.valorAlternativa == data.respostaUsuario}/>
+            <Indicador active={alternativa.alternativa == data.respostaUsuario }>
+              <Marked active={alternativa.alternativa == data.respostaUsuario}/>
             </Indicador>
             <TextoAlternativa>
-              {alternativa.valorAlternativa}) {alternativa.texto}
+              {alternativa.alternativa}) {alternativa.texto}
             </TextoAlternativa>
           </Content>
         </Alternativa>

@@ -18,11 +18,13 @@ export default function Questao({data, onSelect}) {
   const onHandleSelect = p => {
     onSelect(p)
   };
+  console.log(data)
   return (
     <Container>
       <Header>
-        <Imagem tem_imagem={data.temImagem} link_imagem={data.imagem}/>
         <Enunciado>{data.enunciado}a</Enunciado>
+        <Imagem tem_imagem={data.temImagem} link_imagem={data.imagem}/>
+        <Enunciado>{data.textoApoio}</Enunciado>
       </Header>
       <RespostaContext.Provider value={{data, resp, setResp, onHandleSelect}}>
         <AlternativasList />

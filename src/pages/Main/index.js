@@ -45,6 +45,8 @@ export default function Main({navigation}) {
         const {data} = await api.get(`/usuarios/${auth.user.user_id}/provas?page=${page}`)  
         if(page == 0) {
           setLoading(true);
+          data.content.map(p =>
+            console.log(p.is_published))
           setFeed(data.content)
           setLoading(false)
         } else {
